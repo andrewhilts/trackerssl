@@ -88,7 +88,7 @@ var TrackerSSL_TabController = function(tabid, objectChangeInfo, tabState){
 
   tab = TrackerSSL_CurrentTabCollection.get(tabid);
 
-  if(typeof tab !== "undefined"){
+  if(typeof tab !== "undefined" && objectChangeInfo.status == "loading"){
     console.log("tab location changed");
     // reset tab state for this new URL
     tab.reset();
