@@ -1,0 +1,9 @@
+{
+  "name": "trackerssl",
+  "version": "0.0.1",
+  "dependencies": {
+    "URIjs": "https://github.com/medialize/URI.js.git#~1.14.1",
+    "underscore": "~1.7.0",
+    "backbone": "~1.1.2"
+  }
+}
