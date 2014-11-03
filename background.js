@@ -115,6 +115,7 @@ var TrackerSSL_RequestController = function(req){
   var activeURL = new URI(req.url)
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
   var url;
+  var https_laggards = 0;
 
   // Normalise hosts such as "www.example.com."
   // From EFF's HTTPS Everywhere
@@ -167,26 +168,25 @@ var TrackerSSL_RequestController = function(req){
           // check if ruleset redirect 200 OKs?
         }
         tab.get('url').get('requests').add(url);
-        // newuristr = "https://www.eff.org/sites/all/themes/frontier/images/cc-by-logo.png";
-        // return {redirectUrl: newuristr};
+
         // Get Unique requests
         // uniqueRequests = _.uniq(_.pluck(tab.get('url').get('requests'), 'href'));
-        uniqueRequests = _.uniq(tab.get('url').get('requests').pluck('href'));
+        uniqueHosts = _.uniq(tab.get('url').get('requests').pluck('hostname'));
         urls_supporting_https = tab.get('url').get('requests').where({'https_ruleset': true});
         if(urls_supporting_https[0]){
-          uniqueRulesetRequests = _.uniq(urls_supporting_https[0].get('hostname'));
+          uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
         }
         else{
-          uniqueRulesetRequests = [];
+          uniqueRulesetHosts = [];
         }
         // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
-        console.log(uniqueRulesetRequests.length, uniqueRequests.length);
+        https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
       }
 
       // Analyze cookies
 
       // console.log("Request made from page", url.get('isThirdParty'), req);
-      activeTab.updateIconCounter(tab.get('url').get('requests').length);
+      activeTab.updateIconCounter(https_laggards + "/" + uniqueHosts.length);
 
 
       //
