@@ -9,6 +9,11 @@
       "app/bower_components/underscore/underscore-min.js", 
       "app/bower_components/backbone/backbone.js",
       "app/bower_components/URIjs/src/URI.min.js",
+      "app/https-everywhere/util.js", 
+      "app/https-everywhere/lru.js", 
+      "app/https-everywhere/rule_list.js", 
+      "app/https-everywhere/rules.js", 
+      "app/https-everywhere/https_e_bg.js",
       "background.js"
     ]
   },
@@ -22,6 +27,7 @@
   },
   "permissions": [
     "webRequest",
+    "webRequestBlocking", 
     "http://*/*",
     "https://*/*"
   ]

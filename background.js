@@ -51,6 +51,17 @@ var TrackerSSL_URI = function(uriObject){
 var TrackerSSL_request = Backbone.Model.extend({
   initialize: function(){
     this.set('requests', new TrackerSSL_RequestCollection());
+  },
+  thirdPartyChecker: function(firstPartyHostName){
+    // console.log(this.get('hostname'), firstPartyHostName);
+
+    // Naive; doesn't take into account subdomains
+    if(this.get('hostname') !== firstPartyHostName){
+      this.set('isThirdParty', true);
+    }
+    else{
+      this.set('isThirdParty', false);
+    }
   }
 });
 
@@ -81,73 +92,123 @@ var TrackerSSL_TabCollection = Backbone.Collection.extend({
   model: TrackerSSL_Tab
 })
 
-var TrackerSSL_CurrentTabCollection = new TrackerSSL_TabCollection();
-
 var TrackerSSL_TabController = function(tabid, objectChangeInfo, tabState){
-  var tab;
+  // var tab;
 
-  tab = TrackerSSL_CurrentTabCollection.get(tabid);
+  // tab = TrackerSSL_CurrentTabCollection.get(tabid);
 
-  if(typeof tab !== "undefined" && objectChangeInfo.status == "loading"){
-    console.log("tab location changed");
-    // reset tab state for this new URL
-    tab.reset();
-  }
-  else{
-    console.log("new tab");
-    tab = new TrackerSSL_Tab({tabid: tabid});
-    TrackerSSL_CurrentTabCollection.add(tab)
-  }
+  // if(typeof tab !== "undefined" && objectChangeInfo.status == "loading"){
+  //   console.log("tab location changed");
+  // }
+  // else{
+  //   console.log("new tab");
+  //   tab = new TrackerSSL_Tab({tabid: tabid});
+  //   TrackerSSL_CurrentTabCollection.add(tab)
+  // }
 }
 
 var TrackerSSL_RequestController = function(req){
+  var tab;
+  var has_applicable_ruleset;
   var tabid = req.tabId;
   var type = req.type;
   var activeURL = new URI(req.url)
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
   var url;
 
+  // Normalise hosts such as "www.example.com."
+  // From EFF's HTTPS Everywhere
+  var canonical_host = activeURL.hostname();
+  if (canonical_host.charAt(canonical_host.length - 1) == ".") {
+    while (canonical_host.charAt(canonical_host.length - 1) == ".")
+      canonical_host = canonical_host.slice(0,-1);
+    activeURL.hostname(canonical_host);
+  }
+
   url = new TrackerSSL_request({
     hostname: activeURL.hostname(),
     path: activeURL.path(),
-    protocol: activeURL.protocol()
+    protocol: activeURL.protocol(),
+    href: activeURL.href()
   });
 
-  // The following assumes the tab window.location is always the first http request made when the tab fires an update event
-  // That assumption appears to be wrong (hashchanges fire updates)
-  if(activeTab){
-    // console.log(activeTab.get('url'));
-    if(typeof activeTab.get('url').get('hostname') == "undefined"){
-      //No URL assigned to tab since it was opened or it fired an update event
-      activeTab.set('url', url);
-      console.log(activeTab.get('url').get('hostname'));
-      console.log("New Page Loaded")
+  // Check if this is a new page
+  if(type === "main_frame"){
+    // Check if we have an ongoing record for this tab
+    tab = TrackerSSL_CurrentTabCollection.get(tabid);
+    if(typeof tab !== "undefined"){
+      // we have a record, but we're on a new page, so let's refresh
+      tab.reset();
     }
     else{
-      // Assign all subsequet requests to this tab's primary url
-      // console.log(activeTab.get('url').get('requests'));
-      activeTab.get('url').get('requests').add(url);
-      console.log("Request made from page");
-      activeTab.updateIconCounter(activeTab.get('url').get('requests').length);
+      // create a new record
+      tab = new TrackerSSL_Tab({tabid: tabid})
+      TrackerSSL_CurrentTabCollection.add(tab)
+    }
+    // add this request as the current URL for the tab
+    tab.set('url', url);
+    console.log("new page loaded at: " + url.get('hostname'));
+  } 
+  else{
+    // Assume tab exists already
+    tab = TrackerSSL_CurrentTabCollection.get(tabid);
+    if(typeof tab !== "undefined"){
+      url.thirdPartyChecker(
+        tab.get('url').get('hostname')
+      );
+      if(url.get('isThirdParty')){
+
+        // Check for SSL support
+        // console.log(url.get('protocol'));
+        has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
+        if(has_applicable_ruleset){
+          // console.log("HTTPS Everhwhere ruleset found");
+          url.set('https_ruleset', true);
+          // check if ruleset redirect 200 OKs?
+        }
+        tab.get('url').get('requests').add(url);
+        // newuristr = "https://www.eff.org/sites/all/themes/frontier/images/cc-by-logo.png";
+        // return {redirectUrl: newuristr};
+        // Get Unique requests
+        // uniqueRequests = _.uniq(_.pluck(tab.get('url').get('requests'), 'href'));
+        uniqueRequests = _.uniq(tab.get('url').get('requests').pluck('href'));
+        urls_supporting_https = tab.get('url').get('requests').where({'https_ruleset': true});
+        if(urls_supporting_https[0]){
+          uniqueRulesetRequests = _.uniq(urls_supporting_https[0].get('hostname'));
+        }
+        else{
+          uniqueRulesetRequests = [];
+        }
+        // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
+        console.log(uniqueRulesetRequests.length, uniqueRequests.length);
+      }
+
+      // Analyze cookies
+
+      // console.log("Request made from page", url.get('isThirdParty'), req);
+      activeTab.updateIconCounter(tab.get('url').get('requests').length);
+
+
+      //
+    }
+    else{
+      // TODO FIX THIS
+      throw(new Error("Request made from tab that was opened before extension initialized"));
     }
   }
-  // console.log(tabid);
-
-  //get a set of currently-
-
-  // if(tabid >= 0){
-  //   chrome.tabs.sendMessage(tabid, url, function(){
-  //     // console.log("response callback");
-  //   });
-  //   TrackerSSL_ChangeIcon("icon", "23");
-  // }
 }
+
+// TODO load historical collection of url-tracker pairs from localstorage at init
+// var TrackerSSL_HistoryCollection;
+
+var TrackerSSL_CurrentTabCollection = new TrackerSSL_TabCollection();
 
 chrome.webRequest.onBeforeRequest.addListener(
   TrackerSSL_RequestController,
   {
     urls: ['http://*/*', 'https://*/*']
   }
+  , ["blocking"]
 );
 
 chrome.tabs.onUpdated.addListener(TrackerSSL_TabController);
