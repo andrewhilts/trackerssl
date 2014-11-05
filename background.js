@@ -66,7 +66,10 @@ var TrackerSSL_request = Backbone.Model.extend({
 });
 
 var TrackerSSL_RequestCollection = Backbone.Collection.extend({
-      model: TrackerSSL_request
+      model: TrackerSSL_request,
+      comparator: function( collection ){
+        return( collection.get( 'httpsing' ) );
+      }
 });
 
 var TrackerSSL_Tab = Backbone.Model.extend({
@@ -116,6 +119,7 @@ var TrackerSSL_RequestController = function(req){
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
   var url;
   var https_laggards = 0;
+  var uniqueHosts = [];
 
   // Normalise hosts such as "www.example.com."
   // From EFF's HTTPS Everywhere
@@ -151,7 +155,7 @@ var TrackerSSL_RequestController = function(req){
     console.log("new page loaded at: " + url.get('hostname'));
   } 
   else{
-    // Assume tab exists already
+    // check if tabid exists in current records 
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
     if(typeof tab !== "undefined"){
       url.thirdPartyChecker(
@@ -162,17 +166,22 @@ var TrackerSSL_RequestController = function(req){
         // Check for SSL support
         // console.log(url.get('protocol'));
         has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
-        if(has_applicable_ruleset){
+        if(has_applicable_ruleset || url.get('protocol') === "https"){
           // console.log("HTTPS Everhwhere ruleset found");
-          url.set('https_ruleset', true);
+          url.set('httpsing', true);
           // check if ruleset redirect 200 OKs?
+        }
+        else{
+          url.set('httpsing', false);
+          // Special actions for insecure 3rd party transfers?  
         }
         tab.get('url').get('requests').add(url);
 
         // Get Unique requests
-        // uniqueRequests = _.uniq(_.pluck(tab.get('url').get('requests'), 'href'));
         uniqueHosts = _.uniq(tab.get('url').get('requests').pluck('hostname'));
-        urls_supporting_https = tab.get('url').get('requests').where({'https_ruleset': true});
+        urls_supporting_https = tab.get('url').get('requests').where({'httpsing': true});
+        console.log(uniqueHosts);
+        console.log(urls_supporting_https);
         if(urls_supporting_https[0]){
           uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
         }
@@ -187,7 +196,13 @@ var TrackerSSL_RequestController = function(req){
 
       // console.log("Request made from page", url.get('isThirdParty'), req);
       activeTab.updateIconCounter(https_laggards + "/" + uniqueHosts.length);
-
+      console.log(tab.get('tabid'));
+      chrome.runtime.sendMessage({
+        'tab': tab.get('tabid'),
+        'url': tab.get('url')
+      }, function(response) {
+        console.log(response);
+      });
 
       //
     }
