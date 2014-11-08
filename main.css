@@ -1,13 +1,24 @@
 div {
 	box-sizing: border-box;
     width: auto;
+    position: relative;
+    overflow: visible;
     
 }
 
 h1 {
 	
-	color: #009bda;
+	color: white;
 	font: 'merriweather','Helvetica' , sans-serif;
+	background-color: #0072BB;
+	width: 100%;
+	height: 100%;
+	font-size: 18px;
+	text-align: center;
+	padding: auto;
+	
+
+
 }
 
 h2 {
