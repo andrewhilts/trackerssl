@@ -24,6 +24,24 @@ chrome.runtime.sendMessage({
   console.log(response);
 });
 });
+window.onload = function(){
+var reportEl = document.getElementById('report');
+var faqEl = document.getElementById('faq');
+var toggleEl = document.getElementById('about');
+var toggleState = 1;
+toggleEl.onclick = function(){
+  if(toggleState === 1){
+    reportEl.style.display = "none";
+    faqEl.style.display = "block";
+    toggleState = 2;
+  }
+  else{
+    reportEl.style.display = "block";
+    faqEl.style.display = "none";
+    toggleState = 1;
+  }
+}
+}
 
 var populateTrackerLists = function(message){
   var goodHosts = document.getElementById('goodHosts');
