@@ -9,10 +9,6 @@ var urlCount = 0;
 /****
 Dependency = URI.js
 ****/
-var TrackerSSL_URI = function(uriObject){
-  this.uri = uriObject
-  console.log(this);
-}
 
 // url
 //   type
@@ -47,6 +43,7 @@ var TrackerSSL_URI = function(uriObject){
 
 // surveillance_comparer
 //   ruleset
+
 
 var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(){
@@ -87,6 +84,69 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       text: String(txt), 
       tabId: this.get('tabid')
     });
+  },
+  runTests: function(){
+    // Get Unique requests
+        var https_laggards = 0;
+        var uniqueHosts = [];
+        var uniqueHosts = _.uniq(this.get('url').get('requests').pluck('hostname'));
+        var urls_supporting_https = this.get('url').get('requests').where({'httpsing': true});
+        var urls_not_supporting_https = this.get('url').get('requests').where({'httpsing': false});
+        console.log(uniqueHosts);
+        console.log(urls_supporting_https);
+        if(urls_supporting_https[0]){
+          uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
+          uniqueNonRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
+
+          percentageSSL = Math.floor(uniqueRulesetHosts.length / uniqueHosts.length * 100);
+
+          // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
+          https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
+
+          this.get('url').set('badTrackers', uniqueNonRulesetHosts);
+          this.get('url').set('goodTrackers', uniqueRulesetHosts);
+          this.get('url').set('uniqueHosts', uniqueHosts);
+          this.get('url').set('percentageSSL', percentageSSL);
+
+          this.updateIconCounter(percentageSSL +  "%");
+          this.sendMessageToPopup();
+        }
+        else{
+          uniqueRulesetHosts = [];
+        }
+  },
+  sendMessageToPopup: function(){
+    chrome.runtime.sendMessage({
+        'tab': this.get('tabid'),
+        'ssl': (this.get('url').get('protocol') === "https"),
+        'goodURL': this.get('url').get('goodTrackers'),
+        'badURL': this.get('url').get('badTrackers'),
+        'percentageSSL': this.get('url').get('percentageSSL'),
+        'uniqueHosts': this.get('url').get('uniqueHosts')
+      }, function(response) {
+        console.log(response);
+       });
+  },
+  hostnameSSLResolves: function(url){
+    var SSLRequest = new XMLHttpRequest();
+    var destination = "https://" + url.get('hostname');
+    var that = this;
+    var testURL = url;
+    console.log(destination);
+    SSLRequest.open("GET", destination, true);
+    SSLRequest.onreadystatechange = function(){
+      if(SSLRequest.readyState == 4){
+        if (SSLRequest.status == 200) {
+          testURL.set('httpsing', true);
+        }
+        else{
+          testURL.set('httpsing', false);
+        }
+        that.get('url').get('requests').add(url);
+        that.runTests();
+      }
+    };
+    SSLRequest.send();
   }
 });
 
@@ -102,8 +162,7 @@ var TrackerSSL_RequestController = function(req){
   var activeURL = new URI(req.url)
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
   var url;
-  var https_laggards = 0;
-  var uniqueHosts = [];
+
 
   // Normalise hosts such as "www.example.com."
   // From EFF's HTTPS Everywhere
@@ -154,50 +213,14 @@ var TrackerSSL_RequestController = function(req){
           // console.log("HTTPS Everhwhere ruleset found");
           url.set('httpsing', true);
           // check if ruleset redirect 200 OKs?
+          tab.get('url').get('requests').add(url);
+          tab.runTests();
         }
         else{
-          url.set('httpsing', false);
+          // Do one last test
+          tab.hostnameSSLResolves(url);
           // Special actions for insecure 3rd party transfers?  
         }
-        tab.get('url').get('requests').add(url);
-
-        // Get Unique requests
-        uniqueHosts = _.uniq(tab.get('url').get('requests').pluck('hostname'));
-        urls_supporting_https = tab.get('url').get('requests').where({'httpsing': true});
-        urls_not_supporting_https = tab.get('url').get('requests').where({'httpsing': false});
-        console.log(uniqueHosts);
-        console.log(urls_supporting_https);
-        if(urls_supporting_https[0]){
-          uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
-          uniqueNonRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
-
-          percentageSSL = Math.floor(uniqueRulesetHosts.length / uniqueHosts.length * 100);
-
-          // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
-          https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
-
-          tab.get('url').set('badTrackers', uniqueNonRulesetHosts);
-          tab.get('url').set('goodTrackers', uniqueRulesetHosts);
-          tab.get('url').set('uniqueHosts', uniqueHosts);
-          tab.get('url').set('percentageSSL', percentageSSL);
-
-          activeTab.updateIconCounter(percentageSSL +  "%");
-          console.log(tab.get('tabid'));
-          chrome.runtime.sendMessage({
-            'tab': tab.get('tabid'),
-            'ssl': (tab.get('url').get('protocol') === "https"),
-            'goodURL': uniqueRulesetHosts,
-            'badURL': uniqueNonRulesetHosts,
-            'percentageSSL': percentageSSL,
-            'uniqueHosts': uniqueHosts
-          }, function(response) {
-            console.log(response);
-           });
-        }
-        else{
-          uniqueRulesetHosts = [];
-        }
-      }
 
       // Analyze cookies
 
@@ -209,21 +232,13 @@ var TrackerSSL_RequestController = function(req){
       throw(new Error("Request made from tab that was opened before extension initialized"));
     }
   }
+}
 };
 
 var tabMessageController = function(message, sender, sendResponse) {
   var activeTab = TrackerSSL_CurrentTabCollection.get(message.tab);
   if(activeTab){
-    chrome.runtime.sendMessage({
-        'tab': message.tab,
-        'ssl': (activeTab.get('url').get('protocol') === "https"),
-        'goodURL': activeTab.get('url').get('goodTrackers'),
-        'badURL': activeTab.get('url').get('badTrackers'),
-        'percentageSSL': activeTab.get('url').get('percentageSSL'),
-        'uniqueHosts': activeTab.get('url').get('uniqueHosts')
-      }, function(response) {
-        console.log(response);
-      });
+    activeTab.sendMessageToPopup();
   }
 }
 
