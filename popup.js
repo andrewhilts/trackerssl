@@ -30,6 +30,8 @@ var populateTrackerLists = function(message){
   var badHosts = document.getElementById('badHosts');
   var percentageSSL = document.getElementById('percentageSSL');
   var totalTrackers = document.getElementById('totalTrackers');
+  var holla = document.getElementById('holla');
+  var shame = document.getElementById('shame');
   goodHosts.innerHTML = "";
   badHosts.innerHTML = "";
   for(i in message.goodURL){
@@ -40,4 +42,8 @@ var populateTrackerLists = function(message){
   }
   percentageSSL.innerHTML = message.percentageSSL;
   totalTrackers.innerHTML = message.uniqueHosts.length;
+  if(message.ssl){
+    holla.style.display = "block";
+    shame.style.display = "none";
+  }
 }

@@ -170,35 +170,39 @@ var TrackerSSL_RequestController = function(req){
         if(urls_supporting_https[0]){
           uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
           uniqueNonRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
+
+          percentageSSL = Math.floor(uniqueRulesetHosts.length / uniqueHosts.length * 100);
+
+          // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
+          https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
+
+          tab.get('url').set('badTrackers', uniqueNonRulesetHosts);
+          tab.get('url').set('goodTrackers', uniqueRulesetHosts);
+          tab.get('url').set('uniqueHosts', uniqueHosts);
+          tab.get('url').set('percentageSSL', percentageSSL);
+
+          activeTab.updateIconCounter(percentageSSL +  "%");
+          console.log(tab.get('tabid'));
+          chrome.runtime.sendMessage({
+            'tab': tab.get('tabid'),
+            'ssl': (tab.get('url').get('protocol') === "https"),
+            'goodURL': uniqueRulesetHosts,
+            'badURL': uniqueNonRulesetHosts,
+            'percentageSSL': percentageSSL,
+            'uniqueHosts': uniqueHosts
+          }, function(response) {
+            console.log(response);
+           });
         }
         else{
           uniqueRulesetHosts = [];
         }
-        percentageSSL = Math.floor(uniqueRulesetHosts.length / uniqueHosts.length * 100);
-
-        // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
-        https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
       }
 
       // Analyze cookies
 
       // console.log("Request made from page", url.get('isThirdParty'), req);
-      tab.get('url').set('badTrackers', uniqueNonRulesetHosts);
-      tab.get('url').set('goodTrackers', uniqueRulesetHosts);
-      tab.get('url').set('uniqueHosts', uniqueHosts);
-      tab.get('url').set('percentageSSL', percentageSSL);
-
-      activeTab.updateIconCounter(percentageSSL +  "%");
-      console.log(tab.get('tabid'));
-      chrome.runtime.sendMessage({
-        'tab': tab.get('tabid'),
-        'goodURL': uniqueRulesetHosts,
-        'badURL': uniqueNonRulesetHosts,
-        'percentageSSL': percentageSSL,
-        'uniqueHosts': uniqueHosts
-      }, function(response) {
-        console.log(response);
-      });
+      
     }
     else{
       // TODO FIX THIS
@@ -212,6 +216,7 @@ var tabMessageController = function(message, sender, sendResponse) {
   if(activeTab){
     chrome.runtime.sendMessage({
         'tab': message.tab,
+        'ssl': (activeTab.get('url').get('protocol') === "https"),
         'goodURL': activeTab.get('url').get('goodTrackers'),
         'badURL': activeTab.get('url').get('badTrackers'),
         'percentageSSL': activeTab.get('url').get('percentageSSL'),
