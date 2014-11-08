@@ -33,13 +33,16 @@ var populateTrackerLists = function(message){
   var holla = document.getElementById('holla');
   var shame = document.getElementById('shame');
   var notrackers = document.getElementById('notrackers');
-  var tweetThanksLinkContainer = document.getElementById('tweetThanksLinkContainer');
+    var tweetThanksLinkContainer = document.getElementById('tweetThanksLinkContainer');
+  var tweetAskLinkContainer = document.getElementById('tweetThanksLinkContainer');
   var tweetShameLinkContainer = document.getElementById('tweetShameLinkContainer');
   var tweetModerateShameLinkContainer = document.getElementById('tweetModerateShameLinkContainer');
   var tweetThanksLinkElement = document.getElementById('tweetThanksLink');
+  var tweetAskLinkElement = document.getElementById('tweetAskLink');
   var tweetShameLinkElement = document.getElementById('tweetShameLink');
   var tweetModerateShameLinkElement = document.getElementById('tweetModerateShameLink');
   var tweetThanksLink = "https://twitter.com/intent/tweet?text=Thank%20you%20" + message.hostName + "%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL";
+  var tweetAskLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + "%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl";
   var tweetShameLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + ",%20most%20of%20your%20ad%20trackers%20support%20SSL.%20Why%20don't%20you%3F%20Do%20your%20part%20to%20fight%20mass%20surveillance.%20%23trackerSSL";
   var tweetModerateShameLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + ",%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL";
   goodHosts.innerHTML = "";
@@ -48,10 +51,21 @@ var populateTrackerLists = function(message){
   var e1 = document.getElementById("hostnameContainer1");
   var e2 = document.getElementById("hostnameContainer2");
   var e3 = document.getElementById("hostnameContainer3");
+  var e4 = document.getElementById("hostnameContainer4");
   e1.innerHTML = message.hostName;
   e2.innerHTML = message.hostName;
   e3.innerHTML = message.hostName;
+  e4.innerHTML = message.hostName;
 
+  if(message.couldBeSSL){
+    couldHolla.style.display = "block";
+    holla.style.display = "none";
+    shame.style.display = "none";
+    tweetAskLinkContainer.style.display="block";
+    tweetAskLinkElement.setAttribute("href", tweetAskLink);
+  }
+  else{
+    couldHolla.style.display = "none";
   if(message.uniqueHosts){
     for(i in message.goodURL){
       goodHosts.appendChild(createListItem(message.goodURL[i]));
@@ -99,4 +113,5 @@ var populateTrackerLists = function(message){
     shame.style.display = "none";
     notrackers.style.display = "block";
   }
+}
 }

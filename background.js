@@ -92,8 +92,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         var uniqueHosts = _.uniq(this.get('url').get('requests').pluck('hostname'));
         var urls_supporting_https = this.get('url').get('requests').where({'httpsing': true});
         var urls_not_supporting_https = this.get('url').get('requests').where({'httpsing': false});
-        console.log(uniqueHosts);
-        console.log(urls_supporting_https);
+
         if(urls_supporting_https[0]){
           uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
           uniqueNonRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
@@ -120,6 +119,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         'tab': this.get('tabid'),
         'hostName': this.get('url').get('hostname'),
         'ssl': (this.get('url').get('protocol') === "https"),
+        'couldBeSSL': this.get('url').get('couldBeSSL'),
         'goodURL': this.get('url').get('goodTrackers'),
         'badURL': this.get('url').get('badTrackers'),
         'percentageSSL': this.get('url').get('percentageSSL'),
@@ -184,6 +184,13 @@ var TrackerSSL_RequestController = function(req){
   // Check if this is a new page
   if(type === "main_frame"){
     // Check if we have an ongoing record for this tab
+    if(url.get('protocol') == "http"){
+      main_page_has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
+      console.log(main_page_has_applicable_ruleset);
+      if(main_page_has_applicable_ruleset){
+        url.set("couldBeSSL", true);
+      }
+    }
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
     if(typeof tab !== "undefined"){
       // we have a record, but we're on a new page, so let's refresh
