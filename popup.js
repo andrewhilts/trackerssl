@@ -44,6 +44,10 @@ var populateTrackerLists = function(message){
   totalTrackers.innerHTML = message.uniqueHosts.length;
   if(message.ssl){
     holla.style.display = "block";
+<<<<<<< Updated upstream
     shame.style.display = "none";
+=======
+    blame.style.display = "none";
+>>>>>>> Stashed changes
   }
 }
