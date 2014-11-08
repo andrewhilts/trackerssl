@@ -181,6 +181,9 @@ var TrackerSSL_RequestController = function(req){
       // Analyze cookies
 
       // console.log("Request made from page", url.get('isThirdParty'), req);
+      tab.get('url').set('badTrackers', uniqueNonRulesetHosts);
+      tab.get('url').set('goodTrackers', uniqueRulesetHosts);
+
       activeTab.updateIconCounter(https_laggards + "/" + uniqueHosts.length);
       console.log(tab.get('tabid'));
       chrome.runtime.sendMessage({
@@ -198,6 +201,19 @@ var TrackerSSL_RequestController = function(req){
   }
 };
 
+var tabMessageController = function(message, sender, sendResponse) {
+  var activeTab = TrackerSSL_CurrentTabCollection.get(message.tab);
+  if(activeTab){
+    chrome.runtime.sendMessage({
+        'tab': message.tab,
+        'goodURL': activeTab.get('url').get('goodTrackers'),
+        'badURL': activeTab.get('url').get('badTrackers')
+      }, function(response) {
+        console.log(response);
+      });
+  }
+}
+
 // TODO load historical collection of url-tracker pairs from localstorage at init
 // var TrackerSSL_HistoryCollection;
 
@@ -210,6 +226,8 @@ chrome.webRequest.onBeforeRequest.addListener(
   }
   , ["blocking"]
 );
+
+chrome.runtime.onMessage.addListener(tabMessageController);
 
 // chrome.tabs.onUpdated.addListener(TrackerSSL_TabController);
 

@@ -10,16 +10,30 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
     var e;
     if(message.tab == tabs[0].id){
-      var goodHosts = document.getElementById('goodHosts');
-      var badHosts = document.getElementById('badHosts');
-      goodHosts.innerHTML = "";
-      badHosts.innerHTML = "";
-        for(i in message.goodURL){
-          goodHosts.appendChild(createListItem(message.goodURL[i]));
-        }
-        for(i in message.badURL){
-          badHosts.appendChild(createListItem(message.badURL[i]));
-        }
+      populateTrackerLists(message);
      }
 });
 });
+
+chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+var tabid = tabs[0].id;
+chrome.runtime.sendMessage({
+  tab: tabid,
+  message: "getTrackers"
+}, function(response) {
+  console.log(response);
+});
+});
+
+var populateTrackerLists = function(message){
+  var goodHosts = document.getElementById('goodHosts');
+  var badHosts = document.getElementById('badHosts');
+  goodHosts.innerHTML = "";
+  badHosts.innerHTML = "";
+  for(i in message.goodURL){
+    goodHosts.appendChild(createListItem(message.goodURL[i]));
+  }
+  for(i in message.badURL){
+    badHosts.appendChild(createListItem(message.badURL[i]));
+  }
+}
