@@ -118,6 +118,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   sendMessageToPopup: function(){
     chrome.runtime.sendMessage({
         'tab': this.get('tabid'),
+        'hostName': this.get('url').get('hostname'),
         'ssl': (this.get('url').get('protocol') === "https"),
         'goodURL': this.get('url').get('goodTrackers'),
         'badURL': this.get('url').get('badTrackers'),

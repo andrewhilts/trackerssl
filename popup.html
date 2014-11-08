@@ -3,10 +3,24 @@
 <link rel="stylesheet" type="text/css" href="main.css">
 <div id="container">
 <h1>Tracker SSL!</h1>
-<p id="holla">This website was served through SSL! Yay!</p>
+<div id="holla">
+  <p>This website was served through SSL!
+  <span id="tweetThanksLinkContainer">
+  Why don't you tweet your thanks to <span id="hostnameContainer1"></span>? <a href="" id="tweetThanksLink" target="_blank">TWEET</a>
+</span>
+  </p>
+</div>
+
 <p id="notrackers">No 3rd party trackers on this site. Golden!</p>
 <div id="shame">
-<p>At least <span id="percentageSSL"></span>% of the <span id="totalTrackers"></span> third party trackers on this page support SSL. <span>So should this website!</span></p>
+<p><span id="percentageSSL"></span>% of the <span id="totalTrackers"></span> third party trackers on this page could support SSL. 
+<span id="tweetShameLinkContainer">
+  Since a majority of these trackers are secure, why don't you tell <span id="hostnameContainer2"></span> to do it too? <a href="" id="tweetShameLink" target="_blank">TWEET</a>
+</span>
+<span id="tweetModerateShameLinkContainer">
+  Since many of these trackers aren't secure, why don't you tell  <span id="hostnameContainer3"></span> to use more responsible ad networks? <a href="" id="tweetModerateShameLink" target="_blank">TWEET</a>
+</span>
+</p>
 <h1>Good Hosts</h1>
 <ul id="goodHosts"></ul>
 <h2>Bad Hosts</h2>

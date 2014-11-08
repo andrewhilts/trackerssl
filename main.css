@@ -35,3 +35,7 @@ h2 {
 #holla {
   display:none;
 }
+
+#tweetThanksLinkContainer, #tweetShameLinkContainer, #tweetModerateShameLinkContainer {
+  display:none;
+}
