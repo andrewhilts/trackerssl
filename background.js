@@ -48,7 +48,7 @@ var TrackerSSL_URI = function(uriObject){
 // surveillance_comparer
 //   ruleset
 
-var TrackerSSL_request = Backbone.Model.extend({
+var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(){
     this.set('requests', new TrackerSSL_RequestCollection());
   },
@@ -66,7 +66,7 @@ var TrackerSSL_request = Backbone.Model.extend({
 });
 
 var TrackerSSL_RequestCollection = Backbone.Collection.extend({
-      model: TrackerSSL_request,
+      model: TrackerSSL_Request,
       comparator: function( collection ){
         return( collection.get( 'httpsing' ) );
       }
@@ -76,11 +76,11 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   tabid: null,
   idAttribute: "tabid",
   initialize: function(){
-    this.set('url', new TrackerSSL_request());
+    this.set('url', new TrackerSSL_Request());
     console.log("new first party url loaded");
   },
   reset: function(){
-    this.set('url', new TrackerSSL_request());
+    this.set('url', new TrackerSSL_Request());
   },
   updateIconCounter: function(txt){
     chrome.browserAction.setBadgeText({
@@ -90,25 +90,9 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   }
 });
 
-
 var TrackerSSL_TabCollection = Backbone.Collection.extend({
   model: TrackerSSL_Tab
-})
-
-var TrackerSSL_TabController = function(tabid, objectChangeInfo, tabState){
-  // var tab;
-
-  // tab = TrackerSSL_CurrentTabCollection.get(tabid);
-
-  // if(typeof tab !== "undefined" && objectChangeInfo.status == "loading"){
-  //   console.log("tab location changed");
-  // }
-  // else{
-  //   console.log("new tab");
-  //   tab = new TrackerSSL_Tab({tabid: tabid});
-  //   TrackerSSL_CurrentTabCollection.add(tab)
-  // }
-}
+});
 
 var TrackerSSL_RequestController = function(req){
   var tab;
@@ -130,7 +114,7 @@ var TrackerSSL_RequestController = function(req){
     activeURL.hostname(canonical_host);
   }
 
-  url = new TrackerSSL_request({
+  url = new TrackerSSL_Request({
     hostname: activeURL.hostname(),
     path: activeURL.path(),
     protocol: activeURL.protocol(),
@@ -180,10 +164,12 @@ var TrackerSSL_RequestController = function(req){
         // Get Unique requests
         uniqueHosts = _.uniq(tab.get('url').get('requests').pluck('hostname'));
         urls_supporting_https = tab.get('url').get('requests').where({'httpsing': true});
+        urls_not_supporting_https = tab.get('url').get('requests').where({'httpsing': false});
         console.log(uniqueHosts);
         console.log(urls_supporting_https);
         if(urls_supporting_https[0]){
           uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
+          uniqueNonRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
         }
         else{
           uniqueRulesetHosts = [];
@@ -199,19 +185,18 @@ var TrackerSSL_RequestController = function(req){
       console.log(tab.get('tabid'));
       chrome.runtime.sendMessage({
         'tab': tab.get('tabid'),
-        'url': tab.get('url')
+        'goodURL': uniqueRulesetHosts,
+        'badURL': uniqueNonRulesetHosts
       }, function(response) {
         console.log(response);
       });
-
-      //
     }
     else{
       // TODO FIX THIS
       throw(new Error("Request made from tab that was opened before extension initialized"));
     }
   }
-}
+};
 
 // TODO load historical collection of url-tracker pairs from localstorage at init
 // var TrackerSSL_HistoryCollection;
@@ -226,5 +211,5 @@ chrome.webRequest.onBeforeRequest.addListener(
   , ["blocking"]
 );
 
-chrome.tabs.onUpdated.addListener(TrackerSSL_TabController);
+// chrome.tabs.onUpdated.addListener(TrackerSSL_TabController);
 
