@@ -28,6 +28,8 @@ chrome.runtime.sendMessage({
 var populateTrackerLists = function(message){
   var goodHosts = document.getElementById('goodHosts');
   var badHosts = document.getElementById('badHosts');
+  var percentageSSL = document.getElementById('percentageSSL');
+  var totalTrackers = document.getElementById('totalTrackers');
   goodHosts.innerHTML = "";
   badHosts.innerHTML = "";
   for(i in message.goodURL){
@@ -36,4 +38,6 @@ var populateTrackerLists = function(message){
   for(i in message.badURL){
     badHosts.appendChild(createListItem(message.badURL[i]));
   }
+  percentageSSL.innerHTML = message.percentageSSL;
+  totalTrackers.innerHTML = message.uniqueHosts.length;
 }

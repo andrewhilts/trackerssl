@@ -174,6 +174,8 @@ var TrackerSSL_RequestController = function(req){
         else{
           uniqueRulesetHosts = [];
         }
+        percentageSSL = Math.floor(uniqueRulesetHosts.length / uniqueHosts.length * 100);
+
         // uniqueRulesetRequests = _.uniq(tab.get('url').get('requests').where({'https_ruleset': true}));
         https_laggards = uniqueHosts.length - uniqueRulesetHosts.length;
       }
@@ -183,13 +185,17 @@ var TrackerSSL_RequestController = function(req){
       // console.log("Request made from page", url.get('isThirdParty'), req);
       tab.get('url').set('badTrackers', uniqueNonRulesetHosts);
       tab.get('url').set('goodTrackers', uniqueRulesetHosts);
+      tab.get('url').set('uniqueHosts', uniqueHosts);
+      tab.get('url').set('percentageSSL', percentageSSL);
 
-      activeTab.updateIconCounter(https_laggards + "/" + uniqueHosts.length);
+      activeTab.updateIconCounter(percentageSSL +  "%");
       console.log(tab.get('tabid'));
       chrome.runtime.sendMessage({
         'tab': tab.get('tabid'),
         'goodURL': uniqueRulesetHosts,
-        'badURL': uniqueNonRulesetHosts
+        'badURL': uniqueNonRulesetHosts,
+        'percentageSSL': percentageSSL,
+        'uniqueHosts': uniqueHosts
       }, function(response) {
         console.log(response);
       });
@@ -207,7 +213,9 @@ var tabMessageController = function(message, sender, sendResponse) {
     chrome.runtime.sendMessage({
         'tab': message.tab,
         'goodURL': activeTab.get('url').get('goodTrackers'),
-        'badURL': activeTab.get('url').get('badTrackers')
+        'badURL': activeTab.get('url').get('badTrackers'),
+        'percentageSSL': activeTab.get('url').get('percentageSSL'),
+        'uniqueHosts': activeTab.get('url').get('uniqueHosts')
       }, function(response) {
         console.log(response);
       });
