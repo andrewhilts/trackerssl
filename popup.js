@@ -32,18 +32,37 @@ var populateTrackerLists = function(message){
   var totalTrackers = document.getElementById('totalTrackers');
   var holla = document.getElementById('holla');
   var shame = document.getElementById('shame');
+  var notrackers = document.getElementById('notrackers');
   goodHosts.innerHTML = "";
   badHosts.innerHTML = "";
-  for(i in message.goodURL){
-    goodHosts.appendChild(createListItem(message.goodURL[i]));
+
+  if(message.uniqueHosts){
+    for(i in message.goodURL){
+      goodHosts.appendChild(createListItem(message.goodURL[i]));
+    }
+    for(i in message.badURL){
+      badHosts.appendChild(createListItem(message.badURL[i]));
+    }
+    percentageSSL.innerHTML = message.percentageSSL;
+    totalTrackers.innerHTML = message.uniqueHosts.length;
+    if(message.ssl){
+      holla.style.display = "block";
+      shame.style.display = "none";
+    }
+    else{
+      holla.style.display = "none";
+      shame.style.display = "block";
+    }
+    notrackers.style.display = "none";
   }
-  for(i in message.badURL){
-    badHosts.appendChild(createListItem(message.badURL[i]));
-  }
-  percentageSSL.innerHTML = message.percentageSSL;
-  totalTrackers.innerHTML = message.uniqueHosts.length;
-  if(message.ssl){
-    holla.style.display = "block";
+  else{
+    if(message.ssl){
+      holla.style.display = "block";
+    }
+    else{
+      holla.style.display = "none";
+    }
     shame.style.display = "none";
+    notrackers.style.display = "block";
   }
 }
