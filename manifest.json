@@ -19,8 +19,8 @@
   },
   "browser_action": {
     "default_icon": {
-      "19": "img/icon19.jpg",
-      "38": "img/icon38.jpg"
+      "19": "img/icon19.png",
+      "38": "img/icon38.png"
     },
     "default_title": "Tracker SSL",
     "default_popup": "popup.html"
