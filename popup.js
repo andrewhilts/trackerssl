@@ -5,6 +5,18 @@ var createListItem = function(content){
 }
 var container = document.getElementById('container');
 var txt = document.getElementsByTagName('h1')[0];
+var report = document.getElementById('report');
+
+
+ var iframe = document.getElementById('sandbox');
+  console.log(iframe);
+ var message = {
+   command: 'render',
+   context: {thing: 'world'}
+ };
+ iframe.onload = function(){
+  iframe.contentWindow.postMessage(message, '*');
+  }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -13,6 +25,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       populateTrackerLists(message);
      }
 });
+});
+
+window.addEventListener('message', function(event) {
+  if (event.data.html) {
+  console.log(event);
+    report.innerHTML = event.data.html;
+  }
 });
 
 chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -24,112 +43,30 @@ chrome.runtime.sendMessage({
   console.log(response);
 });
 });
+
 window.onload = function(){
-var reportEl = document.getElementById('report');
-var faqEl = document.getElementById('faq');
-var toggleEl = document.getElementById('about');
-var toggleState = 1;
-toggleEl.onclick = function(){
-  if(toggleState === 1){
-    reportEl.style.display = "none";
-    faqEl.style.display = "block";
-    toggleState = 2;
-  }
-  else{
-    reportEl.style.display = "block";
-    faqEl.style.display = "none";
-    toggleState = 1;
-  }
-}
-}
-
-var populateTrackerLists = function(message){
-  var goodHosts = document.getElementById('goodHosts');
-  var badHosts = document.getElementById('badHosts');
-  var percentageSSL = document.getElementById('percentageSSL');
-  var totalTrackers = document.getElementById('totalTrackers');
-  var holla = document.getElementById('holla');
-  var shame = document.getElementById('shame');
-  var notrackers = document.getElementById('notrackers');
-    var tweetThanksLinkContainer = document.getElementById('tweetThanksLinkContainer');
-  var tweetAskLinkContainer = document.getElementById('tweetThanksLinkContainer');
-  var tweetShameLinkContainer = document.getElementById('tweetShameLinkContainer');
-  var tweetModerateShameLinkContainer = document.getElementById('tweetModerateShameLinkContainer');
-  var tweetThanksLinkElement = document.getElementById('tweetThanksLink');
-  var tweetAskLinkElement = document.getElementById('tweetAskLink');
-  var tweetShameLinkElement = document.getElementById('tweetShameLink');
-  var tweetModerateShameLinkElement = document.getElementById('tweetModerateShameLink');
-  var tweetThanksLink = "https://twitter.com/intent/tweet?text=Thank%20you%20" + message.hostName + "%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL";
-  var tweetAskLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + "%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl";
-  var tweetShameLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + ",%20most%20of%20your%20ad%20trackers%20support%20SSL.%20Why%20don't%20you%3F%20Do%20your%20part%20to%20fight%20mass%20surveillance.%20%23trackerSSL";
-  var tweetModerateShameLink = "https://twitter.com/intent/tweet?text=Hey%20" + message.hostName + ",%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL";
-  goodHosts.innerHTML = "";
-  badHosts.innerHTML = "";
-
-  var e1 = document.getElementById("hostnameContainer1");
-  var e2 = document.getElementById("hostnameContainer2");
-  var e3 = document.getElementById("hostnameContainer3");
-  var e4 = document.getElementById("hostnameContainer4");
-  e1.innerHTML = message.hostName;
-  e2.innerHTML = message.hostName;
-  e3.innerHTML = message.hostName;
-  e4.innerHTML = message.hostName;
-
-  if(message.couldBeSSL){
-    couldHolla.style.display = "block";
-    holla.style.display = "none";
-    shame.style.display = "none";
-    tweetAskLinkContainer.style.display="block";
-    tweetAskLinkElement.setAttribute("href", tweetAskLink);
-  }
-  else{
-    couldHolla.style.display = "none";
-  if(message.uniqueHosts){
-    for(i in message.goodURL){
-      goodHosts.appendChild(createListItem(message.goodURL[i]));
-    }
-    for(i in message.badURL){
-      badHosts.appendChild(createListItem(message.badURL[i]));
-    }
-    percentageSSL.innerHTML = message.percentageSSL;
-    totalTrackers.innerHTML = message.uniqueHosts.length;
-    if(message.ssl){
-      holla.style.display = "block";
-      shame.style.display = "none";
-      tweetThanksLinkContainer.style.display="block";
-      tweetThanksLinkElement.setAttribute("href", tweetThanksLink);
+  var reportEl = document.getElementById('report');
+  var faqEl = document.getElementById('faq');
+  var toggleEl = document.getElementById('about');
+  var toggleState = 1;
+  toggleEl.onclick = function(){
+    if(toggleState === 1){
+      reportEl.style.display = "none";
+      faqEl.style.display = "block";
+      toggleState = 2;
     }
     else{
-      holla.style.display = "none";
-      shame.style.display = "block";
-      if(message.percentageSSL >= 50){
-        tweetShameLinkContainer.style.display="block";
-        tweetModerateShameLinkContainer.style.display="none";
-        tweetThanksLinkContainer.style.display="none";
-        tweetShameLinkElement.setAttribute("href", tweetShameLink);
-      }
-      else{
-        tweetShameLinkContainer.style.display="none";
-        tweetModerateShameLinkContainer.style.display="block";
-        tweetThanksLinkContainer.style.display="none";
-        tweetModerateShameLinkElement.setAttribute("href", tweetModerateShameLink);
-      }
+      reportEl.style.display = "block";
+      faqEl.style.display = "none";
+      toggleState = 1;
     }
-    notrackers.style.display = "none";
-  }
-  else{
-    if(message.ssl){
-      holla.style.display = "block";
-      tweetShameLinkContainer.style.display="none";
-        tweetModerateShameLinkContainer.style.display="none";
-        tweetThanksLinkContainer.style.display="block";
-      tweetThanksLinkElement.setAttribute("href", tweetThanksLinkElement);
-    }
-    else{
-      holla.style.display = "none";
-    }
-    shame.style.display = "none";
-    notrackers.style.display = "block";
   }
 }
+
+var populateTrackerLists = function(tabData){
+  var message = {
+   command: 'render',
+   context: tabData
+  };
+  iframe.contentWindow.postMessage(message, '*');
 }

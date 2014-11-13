@@ -106,6 +106,9 @@ var TrackerSSL_Tab = Backbone.Model.extend({
           this.get('url').set('goodTrackers', uniqueRulesetHosts);
           this.get('url').set('uniqueHosts', uniqueHosts);
           this.get('url').set('percentageSSL', percentageSSL);
+          this.get('url').set('majorityTrackersSSL', (percentageSSL >= 50));
+          this.get('url').set('completeTrackersSSL', (percentageSSL === 100));
+          this.get('url').set('uniqueHostsTotal', uniqueHosts.length);
 
           this.updateIconCounter(percentageSSL +  "%");
           this.sendMessageToPopup();
@@ -123,7 +126,10 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         'goodURL': this.get('url').get('goodTrackers'),
         'badURL': this.get('url').get('badTrackers'),
         'percentageSSL': this.get('url').get('percentageSSL'),
-        'uniqueHosts': this.get('url').get('uniqueHosts')
+        'majorityTrackersSSL': this.get('url').get('majorityTrackersSSL'),
+        'completeTrackersSSL': this.get('url').get('completeTrackersSSL'),
+        'uniqueHosts': this.get('url').get('uniqueHosts'),
+        'uniqueHostsTotal': this.get('url').get('uniqueHostsTotal').length
       }, function(response) {
         console.log(response);
        });

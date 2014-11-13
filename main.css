@@ -91,3 +91,8 @@ h2.bad {
 #faq {
   display:none;
 }
+
+#sandbox {
+  height:0;
+  display:none;
+}

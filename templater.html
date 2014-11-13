@@ -1,0 +1,90 @@
+<script src="app/bower_components/handlebars/handlebars.min.js"></script>
+<script id="hello-world-template" type="text/x-handlebars-template">
+    {{#if ssl}}
+    	<p id="leadMessage">This website was served through SSL!</p>
+    	{{#if uniqueHosts}}
+	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
+	    	{{#if completeTrackersSSL}}
+	    		<p>Since all its trackers support SSL as well, why don&lsquo;t you tweet your thanks to {{hostName}}?</p>
+	    		<p><a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+	    	{{else}}
+	    		<p>Since some of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell {{hostName}} to ensure its trackers support SSL?</strong></p>
+	    		<p><a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Might%20wanna%20fix%20that.%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+	    	{{/if}}
+	    {{else}}
+	    	<p id="trackerCount">No 3rd party trackers on this site.</p>
+	    	<p>Why don&lsquo;t you thank {{hostName}} for supporting SSL?</p>
+	    	<p><a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+	    {{/if}}
+    {{else}}
+    	{{#if couldBeSSL}}
+    		<p id="leadMessage">This website supports SSL but it&lsquo;s not the default!</p>
+    		{{#if uniqueHosts}}
+		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
+		    	{{#if majorityTrackersSSL}}
+		    		<p>Since a majority of these trackers are secure, <strong>why don&lsquo;t you tell {{hostName}} to make SSL the default?</p>
+		    		<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}}%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    	{{else}}
+		    		<p>Since many of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell {{hostName}} to use more responsible ad networks?</strong></p>
+		    		<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    	{{/if}}
+		    {{else}}
+		    	<p id="trackerCount">No 3rd party trackers on this site.</p>
+		    	<p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask {{hostName}} to adopt SSL by default?</p>
+		    	<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}}%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    {{/if}}
+    	{{else}}
+    		<p id="leadMessage">This website does not support SSL.</p>
+			{{#if uniqueHosts}}
+		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
+		    	{{#if majorityTrackersSSL}}
+		    		<p>Since a majority of these trackers are secure, <strong>why don&lsquo;t you tell {{hostName}} to support SSL too?</p>
+		    		<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20support%20SSL.%20Why%20don't%20you%3F%20Do%20your%20part%20to%20fight%20mass%20surveillance.%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    	{{else}}
+		    		<p>Since many of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell  {{hostName}} to use more responsible ad networks?</strong></p>
+		    		<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    	{{/if}}
+		    {{else}}
+		    	<p id="trackerCount">No 3rd party trackers on this site.</p>
+		    	<p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask {{hostName}} to adopt SSL?</p>
+		    	<p><a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}}%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a></p>
+		    {{/if}}
+    	{{/if}}
+    {{/if}}
+    {{#if goodURL}}
+    	<h2 class="good">Trackers with SSL support</h2>
+    	<ul class="hostsContainer" id="goodHosts">
+    	{{#each goodURL}}
+    		<li>{{this}}</li>
+    	{{/each}}
+    	</ul>
+    {{/if}}
+    {{#if badURL}}
+    	<h2 class="bad">Trackers without SSL support</h2>
+    	<ul class="hostsContainer" id="badHosts">
+    	{{#each badURL}}
+    		<li>{{this}}</li>
+    	{{/each}}
+    	</ul>
+    {{/if}}
+
+</script>
+<script>
+  var templates = [];
+  var source = document.getElementById('hello-world-template').innerHTML;
+  templates['hello'] = Handlebars.compile(source);
+</script>
+<script>
+  window.addEventListener('message', function(event) {
+    var command = event.data.command;
+    var name = event.data.name || 'hello';
+    switch(command) {
+      case 'render':
+        event.source.postMessage({
+          name: name,
+          html: templates[name](event.data.context)
+        }, event.origin);
+       break;
+    }
+  });
+</script>

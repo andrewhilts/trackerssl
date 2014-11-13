@@ -1,45 +1,16 @@
 <!DOCTYPE html>
-<script src="popup.js"></script>
 <link rel="stylesheet" type="text/css" href="main.css">
 <div id="container">
   <h1>Tracker SSL! <span id="about" title="What's TrackerSSL?">?</span></h1>
   <div id="report">
-    <div id="holla">
-      <p>This website was served through SSL!
-      <span class="tweetContainer" id="tweetThanksLinkContainer">
-      <strong>Why don't you tweet your thanks</strong> to <span id="hostnameContainer1"></span>? <a href="" id="tweetThanksLink" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a>
-
-    </span>
-      </p>
-    </div>
-    <div id="couldHolla">
-      <p>This website supports SSL but it's not the default!
-      <span class="tweetContainer" id="tweetAskLinkContainer">
-      <strong>Why don't you ask <span id="hostnameContainer4"></span> to set it as the default?</strong> <a href="" id="tweetAskLink" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a>
-    </span>
-      </p>
-    </div>
-
-    <p id="notrackers">No 3rd party trackers on this site. Golden!</p>
-    <div id="shame">
-    <p><strong><span id="percentageSSL"></span>%</strong> of the <span id="totalTrackers"></span> third party trackers on this page could support SSL. 
-    <span class="tweetContainer" id="tweetShameLinkContainer">
-      Since a majority of these trackers are secure, <strong>why don't you tell <span id="hostnameContainer2"></span> to support SSL too?</strong> <a href="" id="tweetShameLink" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a>
-    </span>
-    <span class="tweetContainer" id="tweetModerateShameLinkContainer">
-      Since many of these trackers aren't secure, <strong>why don't you tell <span id="hostnameContainer3"></span> to use more responsible ad networks?</strong> <a href="" id="tweetModerateShameLink" target="_blank"><img src="img/tweet_button.gif" class="tweetLink"/></a>
-    </span>
-    </p>
-    <h2 class="good">Trackers with SSL support</h2>
-    <ul class="hostsContainer" id="goodHosts"></ul>
-    <h2 class="bad">Trackers without SSL support</h2>
-    <ul class="hostsContainer" id="badHosts"></ul>
-    </div>
+    Loading Report...
   </div>
   <div id="faq">
-<p>While on the internet, you are being constantly tracked. Thousands of companies are using trackers to monitor your behavior and your preferences, mostly for advertising purposes. And they are not only monitoring you - they are most of the time doing that in insecure ways, exposing you even more.  </p>
-<p>SSL is a protocol that allows secure communications over the internet. It establishes an encrypted connection between your computer and the webpage you are viewing. This is a good way to enhance your browsing privacy. You may check if you are on an encrypted connection to a website by looking for the expression "HTTPS://" at the beginning of the URL, or a closed lock icon in some browsers.</p>
-<p>However, many sites do not implement secure connections. Also, some of those who implement secure connections do it in a way in which only part of the website is actually encrypted. Usually, all those trackers and third-party advertising tools fail in using SSL, which results in an even greater privacy threat.</p>
-<p>We believe that more encryption and more information are the best ways to enhance everyone's privacy.  This is why we created TrackerSSL. This plugin collects information on all trackers which are present at a given website - and informs you on which of them use SSL encryption and which don't. It also allows you to share that information on Twitter, raising the global awareness about this problem.</p>
+    <p>While on the internet, you are being constantly tracked. Thousands of companies are using trackers to monitor your behavior and your preferences, mostly for advertising purposes. And they are not only monitoring you - they are most of the time doing that in insecure ways, exposing you even more.  </p>
+    <p>SSL is a protocol that allows secure communications over the internet. It establishes an encrypted connection between your computer and the webpage you are viewing. This is a good way to enhance your browsing privacy. You may check if you are on an encrypted connection to a website by looking for the expression "HTTPS://" at the beginning of the URL, or a closed lock icon in some browsers.</p>
+    <p>However, many sites do not implement secure connections. Also, some of those who implement secure connections do it in a way in which only part of the website is actually encrypted. Usually, all those trackers and third-party advertising tools fail in using SSL, which results in an even greater privacy threat.</p>
+    <p>We believe that more encryption and more information are the best ways to enhance everyone's privacy.  This is why we created TrackerSSL. This plugin collects information on all trackers which are present at a given website - and informs you on which of them use SSL encryption and which don't. It also allows you to share that information on Twitter, raising the global awareness about this problem.</p>
   </div>
 </div>
+<iframe src="templater.html" id="sandbox" height=0></iframe>
+<script src="popup.js"></script>
