@@ -170,6 +170,13 @@ var TrackerSSL_RequestController = function(req){
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
   var url;
 
+  // Basic cookie checking
+  chrome.cookies.getAll({
+    url: req.url
+  }, function(cookie){
+    console.log(cookie);
+  })
+
 
   // Normalise hosts such as "www.example.com."
   // From EFF's HTTPS Everywhere
