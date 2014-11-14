@@ -129,7 +129,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         'majorityTrackersSSL': this.get('url').get('majorityTrackersSSL'),
         'completeTrackersSSL': this.get('url').get('completeTrackersSSL'),
         'uniqueHosts': this.get('url').get('uniqueHosts'),
-        'uniqueHostsTotal': this.get('url').get('uniqueHostsTotal').length
+        'uniqueHostsTotal': this.get('url').get('uniqueHostsTotal')
       }, function(response) {
         console.log(response);
        });
