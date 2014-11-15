@@ -79,11 +79,18 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   reset: function(){
     this.set('url', new TrackerSSL_Request());
   },
-  updateIconCounter: function(txt){
+  updateIconCounter: function(txt, newColor){
     chrome.browserAction.setBadgeText({
       text: String(txt), 
       tabId: this.get('tabid')
     });
+    if(typeof newColor !== "undefined"){
+      console.log(newColor);
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: newColor,
+        tabId: this.get('tabid')
+      });
+    }
   },
   runTests: function(){
     // Get Unique requests
@@ -92,6 +99,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         var uniqueHosts = _.uniq(this.get('url').get('requests').pluck('hostname'));
         var urls_supporting_https = this.get('url').get('requests').where({'httpsing': true});
         var urls_not_supporting_https = this.get('url').get('requests').where({'httpsing': false});
+        var color = "#000000";
 
         if(urls_supporting_https[0]){
           uniqueRulesetHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
@@ -110,7 +118,20 @@ var TrackerSSL_Tab = Backbone.Model.extend({
           this.get('url').set('completeTrackersSSL', (percentageSSL === 100));
           this.get('url').set('uniqueHostsTotal', uniqueHosts.length);
 
-          this.updateIconCounter(percentageSSL +  "%");
+          if(this.get('url').get('protocol') == "https"){
+            color = "#66ff66";
+          }
+          else if(this.get('url').get('badSSL')){
+            color = "#ddd30f";
+          }
+          else if(this.get('url').get('majorityTrackersSSL')){
+            color = "#f96b09";
+          }
+          else{
+            color = "#d0000f";
+          }
+
+          this.updateIconCounter(percentageSSL +  "%", color);
           this.sendMessageToPopup();
         }
         else{
@@ -237,8 +258,6 @@ var TrackerSSL_RequestController = function(req){
         }
 
       // Analyze cookies
-
-      // console.log("Request made from page", url.get('isThirdParty'), req);
 
     }
     else{
