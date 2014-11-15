@@ -29,6 +29,7 @@
     "default_popup": "popup.html"
   },
   "permissions": [
+    "cookies",
     "webRequest",
     "webRequestBlocking", 
     "http://*/*",

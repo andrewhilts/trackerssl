@@ -1,0 +1,33 @@
+// url
+//   type
+//     visited_url
+//       associated_trackers
+//       associated_keywords
+//       // associated_identities
+//     tracker_url
+//       associated_domains
+//   https_info
+//     supports_ssl
+//     ssl_version
+//     host_certificate
+//     intermediate_authority
+//     certificate_authority
+  
+
+// tracker_identifier
+//   ghostery_interface
+
+// https_analyzer
+//   https_everywhere_interface
+
+// keyword_analyzer
+//   ruleset
+
+// // identity_analyzer
+// //   ruleset
+
+// cert_checker
+//   ruleset
+
+// surveillance_comparer
+//   ruleset
