@@ -1,7 +1,10 @@
 var wr = chrome.webRequest;
 
 var TrackerSSL_Request = Backbone.Model.extend({
-  initialize: function(){
+  initialize: function(params){
+    this.set('url', params.url);
+    this.generateURLfragments();
+
     this.set('requests', new TrackerSSL_RequestCollection());
   },
   thirdPartyChecker: function(firstPartyHostName){
@@ -13,6 +16,30 @@ var TrackerSSL_Request = Backbone.Model.extend({
       this.set('isThirdParty', false);
     }
   },
+  generateURLfragments: function(){
+      var oldURL = this.get('url'),
+      newURL;
+      if(!oldURL){
+        throw(new Error("No initial URL provided"));
+      }
+
+      // Parse old URL
+      newURL = new URI(oldURL);
+      // Normalise hosts such as "www.example.com."
+      // From EFF's HTTPS Everywhere
+      var canonical_host = newURL.hostname();
+      if (canonical_host.charAt(canonical_host.length - 1) == ".") {
+        while (canonical_host.charAt(canonical_host.length - 1) == ".")
+          canonical_host = canonical_host.slice(0,-1);
+        newURL.hostname(canonical_host);
+      }
+      this.set({
+        hostname: newURL.hostname(),
+        path: newURL.path(),
+        protocol: newURL.protocol(),
+        href: newURL.href()
+      });
+    },
   isSSL: function(){
     return (this.get('protocol') === "https");
   },
@@ -42,7 +69,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
     var requests = this.get('requests');
     if(requests){
       var urls_supporting_https = requests.where({'supportsSSL': true});
-      secureHosts = _.uniq(new TrackerSSL_TabCollection(urls_supporting_https).pluck('hostname'));
+      secureHosts = _.uniq(new TrackerSSL_RequestCollection(urls_supporting_https).pluck('hostname'));
       this.set('secureHosts', secureHosts);
       return this.get('secureHosts');
     }
@@ -54,7 +81,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
     var requests = this.get('requests');
     if(requests){
       var urls_not_supporting_https = requests.where({'supportsSSL': false});
-      inSecureHosts = _.uniq(new TrackerSSL_TabCollection(urls_not_supporting_https).pluck('hostname'));
+      inSecureHosts = _.uniq(new TrackerSSL_RequestCollection(urls_not_supporting_https).pluck('hostname'));
       this.set('inSecureHosts', inSecureHosts);
       return this.get('inSecureHosts');
     }
@@ -102,11 +129,10 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   tabid: null,
   idAttribute: "tabid",
   initialize: function(){
-    this.set('url', new TrackerSSL_Request());
     console.log("new first party url loaded");
   },
   reset: function(){
-    this.set('url', new TrackerSSL_Request());
+    this.unset('url');
   },
   updateIconCounter: function(txt, newColor){
     chrome.browserAction.setBadgeText({
@@ -122,30 +148,19 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     }
   },
   runTests: function(){
-    var isSSL = this.get('url').isSSL();
-    var uniqueHosts = this.get('url').getUniqueHosts();
-    var totalUniqueHosts = this.get('url').getTotalUniqueHosts();
-    var secureHosts = this.get('url').getSecureHosts();
-    var insecureHosts = this.get('url').getInsecureHosts();
-    var percentageSSL = this.get('url').getPercentageSSL();
-    var majorityTrackersSSL = this.get('url').isMajorityTrackersSSL();
-    var completeTrackerSSL = this.get('url').isCompleteTrackersSSL();
-    var testResults = {};
-    var color;
-    
-    // update popup
-    testResults.tab = this.get('tabid');
-    testResults.hostName = this.get('url').get('hostname');
-    testResults.ssl = isSSL;
-    testResults.couldBeSSL = this.get('url').get('couldBeSSL');
-    testResults.goodURL = secureHosts;
-    testResults.badURL = insecureHosts;
-    testResults.percentageSSL = percentageSSL;
-    testResults.majorityTrackersSSL = majorityTrackersSSL;
-    testResults.completeTrackersSSL = completeTrackerSSL;
-    testResults.uniqueHosts = uniqueHosts;
-    testResults.uniqueHostsTotal = totalUniqueHosts;
-
+    var testResults = {
+      tab:                  this.get('tabid'),
+      hostName:             this.get('url').get('hostname'),
+      ssl:                  this.get('url').isSSL(),
+      couldBeSSL:           this.get('url').get('couldBeSSL'),
+      uniqueHosts:          this.get('url').getUniqueHosts(),
+      uniqueHostsTotal:     this.get('url').getTotalUniqueHosts(),
+      goodURL:              this.get('url').getSecureHosts(),
+      badURL:               this.get('url').getInsecureHosts(),
+      percentageSSL:        this.get('url').getPercentageSSL(),
+      majorityTrackersSSL:  this.get('url').isMajorityTrackersSSL(),
+      completeTrackersSSL:  this.get('url').isCompleteTrackersSSL()
+    }
     this.updateDisplay(testResults);
   },
   sendMessageToPopup: function(message){
@@ -204,29 +219,14 @@ var TrackerSSL_TabCollection = Backbone.Collection.extend({
 
 var TrackerSSL_RequestController = function(req){
   var tab;
+  var url;
   var has_applicable_ruleset;
   var tabid = req.tabId;
-  var type = req.type;
-  var activeURL = new URI(req.url)
+  var type = req.type; 
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
-  var url;
 
-  // Normalise hosts such as "www.example.com."
-  // From EFF's HTTPS Everywhere
-  var canonical_host = activeURL.hostname();
-  if (canonical_host.charAt(canonical_host.length - 1) == ".") {
-    while (canonical_host.charAt(canonical_host.length - 1) == ".")
-      canonical_host = canonical_host.slice(0,-1);
-    activeURL.hostname(canonical_host);
-  }
-
-  url = new TrackerSSL_Request({
-    hostname: activeURL.hostname(),
-    path: activeURL.path(),
-    protocol: activeURL.protocol(),
-    href: activeURL.href()
-  });
-
+  url = new TrackerSSL_Request({url: req.url});
+  console.log(url);
   // Basic cookie checking
   chrome.cookies.getAll({
     url: req.url
@@ -267,6 +267,7 @@ var TrackerSSL_RequestController = function(req){
   else{
     // check if tabid exists in current records 
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
+    console.log(typeof tab);
     if(typeof tab !== "undefined"){
       url.thirdPartyChecker(
         tab.get('url').get('hostname')
@@ -293,13 +294,13 @@ var TrackerSSL_RequestController = function(req){
       console.log(tab.get('cookies'));
 
     }
+  }
     else{
       // TODO FIX THIS
       throw(new Error("Request made from tab that was opened before extension initialized"));
     }
   }
 }
-};
 
 var tabMessageController = function(message, sender, sendResponse) {
   var activeTab = TrackerSSL_CurrentTabCollection.get(message.tab);
