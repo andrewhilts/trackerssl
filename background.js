@@ -130,23 +130,23 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     var percentageSSL = this.get('url').getPercentageSSL();
     var majorityTrackersSSL = this.get('url').isMajorityTrackersSSL();
     var completeTrackerSSL = this.get('url').isCompleteTrackersSSL();
-    var popupMessage = {};
+    var testResults = {};
+    var color;
     
     // update popup
-    popupMessage.tab = this.get('tabid');
-    popupMessage.hostName = this.get('url').get('hostname');
-    popupMessage.ssl = isSSL;
-    popupMessage.couldBeSSL = this.get('url').get('couldBeSSL');
-    popupMessage.goodURL = secureHosts;
-    popupMessage.badURL = insecureHosts;
-    popupMessage.percentageSSL = percentageSSL;
-    popupMessage.majorityTrackersSSL = majorityTrackersSSL;
-    popupMessage.completeTrackersSSL = completeTrackerSSL;
-    popupMessage.uniqueHosts = uniqueHosts;
-    popupMessage.uniqueHostsTotal = totalUniqueHosts;
+    testResults.tab = this.get('tabid');
+    testResults.hostName = this.get('url').get('hostname');
+    testResults.ssl = isSSL;
+    testResults.couldBeSSL = this.get('url').get('couldBeSSL');
+    testResults.goodURL = secureHosts;
+    testResults.badURL = insecureHosts;
+    testResults.percentageSSL = percentageSSL;
+    testResults.majorityTrackersSSL = majorityTrackersSSL;
+    testResults.completeTrackersSSL = completeTrackerSSL;
+    testResults.uniqueHosts = uniqueHosts;
+    testResults.uniqueHostsTotal = totalUniqueHosts;
 
-    this.updateIconCounter(percentageSSL +  "%");
-    this.sendMessageToPopup(popupMessage);
+    this.updateDisplay(testResults);
   },
   sendMessageToPopup: function(message){
     chrome.runtime.sendMessage(message, function(response) {
@@ -174,6 +174,27 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       }
     };
     SSLRequest.send();
+  },
+  updateDisplay: function(message){
+    color = this.determineColor();
+    this.updateIconCounter(message.percentageSSL +  "%", color);
+    this.sendMessageToPopup(message);
+  },
+  determineColor: function(){
+    var color;
+    if(this.get('url').isSSL()){
+      color = "#40a300";
+    }
+    else if(this.get('url').get('badSSL')){
+      color = "#ddd30f";
+    }
+    else if(this.get('url').isMajorityTrackersSSL()){
+      color = "#f96b09";
+    }
+    else{
+      color = "#d0000f";
+    }
+    return color;
   }
 });
 
