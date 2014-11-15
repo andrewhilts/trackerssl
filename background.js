@@ -7,9 +7,8 @@ var TrackerSSL_Request = Backbone.Model.extend({
 
     this.set('requests', new TrackerSSL_RequestCollection());
   },
-  thirdPartyChecker: function(firstPartyHostName){
-    // Naive; doesn't take into account subdomains
-    if(this.get('hostname') !== firstPartyHostName){
+  thirdPartyChecker: function(firstPartyDomain){
+    if(this.get('domain') !== firstPartyDomain){
       this.set('isThirdParty', true);
     }
     else{
@@ -35,6 +34,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
       }
       this.set({
         hostname: newURL.hostname(),
+        domain: newURL.domain(),
         path: newURL.path(),
         protocol: newURL.protocol(),
         href: newURL.href()
@@ -270,10 +270,9 @@ var TrackerSSL_RequestController = function(req){
     console.log(typeof tab);
     if(typeof tab !== "undefined"){
       url.thirdPartyChecker(
-        tab.get('url').get('hostname')
+        tab.get('url').get('domain')
       );
       if(url.get('isThirdParty')){
-
         // Check for SSL support
         has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
 
