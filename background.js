@@ -50,6 +50,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
     if(requests){
       uniqueHosts = _.uniq(requests.pluck('hostname'));
       this.set('uniqueHosts', uniqueHosts);
+      console.log(uniqueHosts.length, requests.length);
       return this.get('uniqueHosts');
     }
     else{
@@ -57,9 +58,9 @@ var TrackerSSL_Request = Backbone.Model.extend({
     }
   },
   getTotalUniqueHosts: function(){
-    var uniqueHosts = this.get('uniqueHosts');
+    var uniqueHosts = this.get('requests');
     if(uniqueHosts){
-      return uniqueHosts.length
+      return uniqueHosts.length;
     }
     else{
       throw(new Error("No unique hosts set"));
@@ -124,6 +125,13 @@ var TrackerSSL_RequestCollection = Backbone.Collection.extend({
         return( collection.get( 'supportsSSL' ) );
       }
 });
+// Only add unique hostnames to request collection
+TrackerSSL_RequestCollection.prototype.add = function(request){
+  var isDupe = this.any(function(_request){
+    return _request.get('hostname') === request.get('hostname');
+  });
+  return isDupe ? false : Backbone.Collection.prototype.add.call(this, request);
+}
 
 var TrackerSSL_Tab = Backbone.Model.extend({
   tabid: null,
@@ -159,7 +167,8 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       badURL:               this.get('url').getInsecureHosts(),
       percentageSSL:        this.get('url').getPercentageSSL(),
       majorityTrackersSSL:  this.get('url').isMajorityTrackersSSL(),
-      completeTrackersSSL:  this.get('url').isCompleteTrackersSSL()
+      completeTrackersSSL:  this.get('url').isCompleteTrackersSSL(),
+      requests:             this.get('url').get('requests').toJSON()
     }
     this.updateDisplay(testResults);
   },
@@ -188,7 +197,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         that.runTests();
       }
     };
-    SSLRequest.send();
+      SSLRequest.send();
   },
   updateDisplay: function(message){
     color = this.determineColor();
@@ -256,8 +265,8 @@ var TrackerSSL_RequestController = function(req){
     }
     else{
       // create a new record
-      tab = new TrackerSSL_Tab({tabid: tabid})
-      TrackerSSL_CurrentTabCollection.add(tab)
+      tab = new TrackerSSL_Tab({tabid: tabid});
+      TrackerSSL_CurrentTabCollection.add(tab);
 
     }
     
@@ -267,7 +276,6 @@ var TrackerSSL_RequestController = function(req){
   else{
     // check if tabid exists in current records 
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
-    console.log(typeof tab);
     if(typeof tab !== "undefined"){
       url.thirdPartyChecker(
         tab.get('url').get('domain')
@@ -290,7 +298,7 @@ var TrackerSSL_RequestController = function(req){
         }
 
       // Analyze cookies
-      console.log(tab.get('cookies'));
+      console.log(url);
 
     }
   }

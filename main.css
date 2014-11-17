@@ -96,3 +96,9 @@ h2.bad {
   height:0;
   display:none;
 }
+
+.cookieCount {
+  font-size:0.8em;
+  float:right;
+  padding-right:0.5em;
+}

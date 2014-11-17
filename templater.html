@@ -54,17 +54,32 @@
     {{#if goodURL}}
     	<h2 class="good">Trackers with SSL support</h2>
     	<ul class="hostsContainer" id="goodHosts">
-    	{{#each goodURL}}
-    		<li>{{this}}</li>
+    	{{#each requests}}
+        {{#if this.supportsSSL}}
+    		  <li>
+            {{this.hostname}}
+            {{#if this.cookies}}
+              <span class="cookieCount">Cookies: {{this.cookies.length}}</span>
+            {{/if}}
+          </li>
+        {{/if}}
     	{{/each}}
     	</ul>
     {{/if}}
     {{#if badURL}}
     	<h2 class="bad">Trackers without SSL support</h2>
     	<ul class="hostsContainer" id="badHosts">
-    	{{#each badURL}}
-    		<li>{{this}}</li>
-    	{{/each}}
+    	{{#each requests}}
+        {{#if this.supportsSSL}}
+        {{else}}
+          <li>
+            {{this.hostname}}
+            {{#if this.cookies}}
+              <span class="cookieCount">Cookies: {{this.cookies.length}}</span>
+            {{/if}}
+          </li>
+        {{/if}}
+      {{/each}}
     	</ul>
     {{/if}}
 
