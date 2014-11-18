@@ -98,7 +98,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
       return Math.floor(secureHosts.length / totalUniqueHosts * 100);
     }
     else{
-      throw(new Error("No hosts or secure hosts found for this URL"));
+      return 100;
     }
   },
   isMajorityTrackersSSL: function(){
@@ -235,7 +235,7 @@ var TrackerSSL_RequestController = function(req){
   var activeTab = TrackerSSL_CurrentTabCollection.get(tabid);
 
   url = new TrackerSSL_Request({url: req.url});
-  console.log(url);
+
   // Basic cookie checking
   chrome.cookies.getAll({
     url: req.url
@@ -269,7 +269,7 @@ var TrackerSSL_RequestController = function(req){
       TrackerSSL_CurrentTabCollection.add(tab);
 
     }
-    
+    console.log("page loaded", url);
     // add this request as the current URL for the tab
     tab.set('url', url);
   } 
@@ -299,7 +299,9 @@ var TrackerSSL_RequestController = function(req){
 
       // Analyze cookies
       console.log(url);
-
+    }
+    else{
+      tab.runTests();
     }
   }
     else{
