@@ -1,5 +1,4 @@
 var container = document.getElementById('container');
-var txt = document.getElementsByTagName('h1')[0];
 var report = document.getElementById('report');
 
 
@@ -10,14 +9,14 @@ var report = document.getElementById('report');
  iframe.style.display = "none";
  iframe.setAttribute("src", "templater.html");
 
- iframe.onload = function(){
-  var message = {
-   command: 'render',
-   context: ""
-  };
-  iframe.contentWindow.postMessage(message, '*');
-  }
- container.appendChild(iframe);
+iframe.onload = function(){
+var message = {
+ command: 'render',
+ context: ""
+};
+iframe.contentWindow.postMessage(message, '*');
+}
+container.appendChild(iframe);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -32,7 +31,6 @@ window.addEventListener('message', function(event) {
   if (event.data.html) {
   console.log(event);
     report.innerHTML = event.data.html;
-    // document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 200;
   }
 });
 
@@ -42,7 +40,6 @@ chrome.runtime.sendMessage({
   tab: tabid,
   message: "getTrackers"
 }, function(response) {
-  console.log(response);
 });
 });
 
