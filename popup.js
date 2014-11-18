@@ -1,22 +1,23 @@
-var createListItem = function(content){
-  var e = document.createElement('li');
-  e.innerHTML = content;
-  return e;
-}
 var container = document.getElementById('container');
 var txt = document.getElementsByTagName('h1')[0];
 var report = document.getElementById('report');
 
 
- var iframe = document.getElementById('sandbox');
-  console.log(iframe);
- var message = {
-   command: 'render',
-   context: {thing: 'world'}
- };
+ var iframe = document.createElement('iframe');
+ iframe.setAttribute("id", "sandbox");
+ iframe.setAttribute("height", "0");
+ iframe.setAttribute("width", "0");
+ iframe.style.display = "none";
+ iframe.setAttribute("src", "templater.html");
+
  iframe.onload = function(){
+  var message = {
+   command: 'render',
+   context: ""
+  };
   iframe.contentWindow.postMessage(message, '*');
   }
+ container.appendChild(iframe);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -31,6 +32,7 @@ window.addEventListener('message', function(event) {
   if (event.data.html) {
   console.log(event);
     report.innerHTML = event.data.html;
+    // document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 200;
   }
 });
 

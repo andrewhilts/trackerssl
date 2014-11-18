@@ -1,6 +1,6 @@
 body {
   min-width:300px;
-  max-height:500px;
+  max-height:480px;
   overflow-y:scroll;
 }
 
@@ -8,8 +8,7 @@ div {
 	box-sizing: border-box;
     width: auto;
     position: relative;
-    overflow: visible;
-    
+    overflow: visible; 
 }
 
 h1 {
@@ -18,13 +17,9 @@ h1 {
 	font: 'merriweather','Helvetica' , sans-serif;
 	background-color: #0072BB;
 	width: 100%;
-	height: 100%;
 	font-size: 18px;
 	text-align: center;
 	padding: auto;
-	
-
-
 }
 
 h2 {
@@ -42,20 +37,6 @@ h2.good {
 }
 h2.bad {
   background-color: red;
-}
-
-#holla {
-  display:none;
-}
-
-#tweetThanksLinkContainer, #tweetShameLinkContainer, #tweetModerateShameLinkContainer {
-  display:none;
-}
-#couldHolla {
-  display:none;
-}
-#notrackers {
-  display:none;
 }
 
 #about {
