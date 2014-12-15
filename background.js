@@ -4,8 +4,10 @@ var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(params){
     this.set('url', params.url);
     this.generateURLfragments();
+    this.set('isIdentifier', false);
 
     this.set('requests', new TrackerSSL_RequestCollection());
+    this.on("change:cookies", this.cookieTest);
   },
   thirdPartyChecker: function(firstPartyDomain){
     if(this.get('domain') !== firstPartyDomain){
@@ -116,13 +118,22 @@ var TrackerSSL_Request = Backbone.Model.extend({
     else{
       return false;
     }
+  },
+  cookieTest: function(){
+    var cookies = this.get('cookies');
+    for(i in cookies){
+      cookie = cookies[i];
+      if(cookie.name.match(".*id$") || cookie.name.match("identifier")){
+        this.set("isIdentifier", true);
+      }
+    }
   }
 });
 
 var TrackerSSL_RequestCollection = Backbone.Collection.extend({
       model: TrackerSSL_Request,
       comparator: function( collection ){
-        return( collection.get( 'supportsSSL' ) );
+        return( !collection.get( 'isIdentifier' ) );
       }
 });
 // Only add unique hostnames to request collection
@@ -197,7 +208,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         that.runTests();
       }
     };
-      SSLRequest.send();
+    SSLRequest.send();
   },
   updateDisplay: function(message){
     color = this.determineColor();
@@ -253,13 +264,11 @@ var TrackerSSL_RequestController = function(req){
       if(main_page_has_applicable_ruleset){
         url.set("couldBeSSL", true);
       }
-
     }
 
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
     
     if(typeof tab !== "undefined"){
-
       // we have a record, but we're on a new page, so let's refresh
       tab.reset();
     }
@@ -267,7 +276,6 @@ var TrackerSSL_RequestController = function(req){
       // create a new record
       tab = new TrackerSSL_Tab({tabid: tabid});
       TrackerSSL_CurrentTabCollection.add(tab);
-
     }
     console.log("page loaded", url);
     // add this request as the current URL for the tab
@@ -290,7 +298,6 @@ var TrackerSSL_RequestController = function(req){
           // check if ruleset redirect 200 OKs?
           tab.get('url').get('requests').add(url);
           tab.runTests();
-
         }
         else{
           // Do one last test

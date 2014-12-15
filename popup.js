@@ -32,6 +32,7 @@ window.addEventListener('message', function(event) {
   console.log(event);
     report.innerHTML = event.data.html;
   }
+  // document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 200;
 });
 
 chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
