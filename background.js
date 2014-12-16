@@ -123,7 +123,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
     var cookies = this.get('cookies');
     for(i in cookies){
       cookie = cookies[i];
-      if(cookie.name.match(".*id$") || cookie.name.match("identifier")){
+      if(cookie.name.match(".*id$") || cookie.name.match("ident") || cookie.name.match("_id_")){
         this.set("isIdentifier", true);
       }
     }
