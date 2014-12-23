@@ -2,12 +2,16 @@ var wr = chrome.webRequest;
 
 var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(params){
+    var that = this;
     this.set('url', params.url);
     this.generateURLfragments();
     this.set('isIdentifier', false);
 
     this.set('requests', new TrackerSSL_RequestCollection());
     this.on("change:cookies", this.cookieTest);
+    // this.get('requests').on('change:cookies', function(request, cookies){
+    //   // that.yolo(request, cookies);
+    // });
   },
   thirdPartyChecker: function(firstPartyDomain){
     if(this.get('domain') !== firstPartyDomain){
@@ -92,6 +96,24 @@ var TrackerSSL_Request = Backbone.Model.extend({
       throw(new Error("No requests made from this URL"));
     }
   },
+  getIdentifiers: function(){
+    var requests = this.get('requests');
+    if(requests){
+      var identifiers = requests.where({'isIdentifier': true});
+      var identCollection = new TrackerSSL_IdentifierCollection();
+      for(i in identifiers){
+        identifier = identifiers[i].get('identifier');
+        identifier.set('supportsSSL', identifiers[i].get('supportsSSL'));
+        identCollection.add(identifier);
+      }
+      identifiers = identCollection.toJSON();
+      this.set('identifiers', identifiers);
+      return this.get('identifiers');
+    }
+    else{
+      throw(new Error("No requests made from this URL"));
+    }
+  },
   getPercentageSSL: function(){
     var totalUniqueHosts = this.getTotalUniqueHosts();
     var secureHosts = this.get('secureHosts');
@@ -122,9 +144,23 @@ var TrackerSSL_Request = Backbone.Model.extend({
   cookieTest: function(){
     var cookies = this.get('cookies');
     for(i in cookies){
+      isIdent = false;
       cookie = cookies[i];
-      if(cookie.name.match(".*id$") || cookie.name.match("ident") || cookie.name.match("_id_")){
+      name = cookie.name.toLowerCase();
+      value = cookie.value.toLowerCase();
+      if(name.match(".*id$") || name.match("ident") || name.match("_id_")){
+        isIdent = true;
+      }
+      else if(value.match(".*id$") || value.match("ident") || value.match("_id_") || value.match("id=")){
+        isIdent = true;
+      }
+      if(isIdent){
         this.set("isIdentifier", true);
+        this.set("identifier", new TrackerSSL_Identifier({
+          "key_name": name,
+          "unique_key": value,
+          "hostname": this.get('hostname')
+        }));
       }
     }
   }
@@ -167,19 +203,21 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     }
   },
   runTests: function(){
+    var url = this.get('url');
     var testResults = {
       tab:                  this.get('tabid'),
-      hostName:             this.get('url').get('hostname'),
-      ssl:                  this.get('url').isSSL(),
-      couldBeSSL:           this.get('url').get('couldBeSSL'),
-      uniqueHosts:          this.get('url').getUniqueHosts(),
-      uniqueHostsTotal:     this.get('url').getTotalUniqueHosts(),
-      goodURL:              this.get('url').getSecureHosts(),
-      badURL:               this.get('url').getInsecureHosts(),
-      percentageSSL:        this.get('url').getPercentageSSL(),
-      majorityTrackersSSL:  this.get('url').isMajorityTrackersSSL(),
-      completeTrackersSSL:  this.get('url').isCompleteTrackersSSL(),
-      requests:             this.get('url').get('requests').toJSON()
+      hostName:             url.get('hostname'),
+      ssl:                  url.isSSL(),
+      couldBeSSL:           url.get('couldBeSSL'),
+      uniqueHosts:          url.getUniqueHosts(),
+      uniqueHostsTotal:     url.getTotalUniqueHosts(),
+      goodURL:              url.getSecureHosts(),
+      badURL:               url.getInsecureHosts(),
+      identifiers:          url.getIdentifiers(),
+      percentageSSL:        url.getPercentageSSL(),
+      majorityTrackersSSL:  url.isMajorityTrackersSSL(),
+      completeTrackersSSL:  url.isCompleteTrackersSSL(),
+      requests:             url.get('requests').toJSON()
     }
     this.updateDisplay(testResults);
   },
@@ -232,6 +270,28 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     return color;
   }
 });
+
+var TrackerSSL_Identifier = Backbone.Model.extend({
+  unique_key: null,
+  hostname: null,
+  supports_ssl: false
+});
+var TrackerSSL_IdentifierCollection = Backbone.Collection.extend({
+  model: TrackerSSL_Identifier
+});
+
+TrackerSSL_IdentifierCollection.prototype.add = function(identifier){
+  var isDupe = this.any(function(_identifier){
+    isDupe = (_identifier.get('unique_key') === identifier.get('unique_key'));
+    if(isDupe && identifier.get('supports_ssl')){
+      // this is to accommodate case where same identifier is used across supporting and non-ssl-supporting hostnames. 
+      //Assumes that if SSL is turned on, then ID will be exclusively transmitted thru SSL.
+      _identifier.set('supports_ssl', true);
+    }
+    return isDupe;
+  });
+  return isDupe ? false : Backbone.Collection.prototype.add.call(this, identifier);
+}
 
 var TrackerSSL_TabCollection = Backbone.Collection.extend({
   model: TrackerSSL_Tab
