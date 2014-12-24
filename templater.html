@@ -1,7 +1,7 @@
 <script src="app/bower_components/handlebars/handlebars.min.js"></script>
 <script id="hello-world-template" type="text/x-handlebars-template">
     {{#if ssl}}
-    	<p id="leadMessage">This website was served through SSL!</p>
+    	<h1 id="leadMessage">This website was served through SSL!</h1>
     	{{#if uniqueHosts}}
 	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page support SSL.</p>
 	    	{{#if completeTrackersSSL}}
@@ -30,7 +30,7 @@
 	    {{/if}}
     {{else}}
     	{{#if couldBeSSL}}
-    		<p id="leadMessage">This website supports SSL but it&lsquo;s not the default!</p>
+    		<h1 id="leadMessage">This website supports SSL but it&lsquo;s not the default!</h1>
     		{{#if uniqueHosts}}
 		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
 		    	{{#if majorityTrackersSSL}}
@@ -58,7 +58,7 @@
           </div>
 		    {{/if}}
     	{{else}}
-    		<p id="leadMessage">This website does not support SSL.</p>
+    		<h1 id="leadMessage">This website is insecure.</h1>
 			{{#if uniqueHosts}}
 		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
 		    	{{#if majorityTrackersSSL}}
@@ -90,30 +90,32 @@
     {{#if ssl}}
       <h2 class="good">Secure Identifiers</h2>
     {{else}}
-      <h2 class="good">Insecure Identifiers</h2>
-
-      These ones <em>Could be secure</em>
-      <ul class="hostsContainer" id="goodHosts">
+      <h2 class="bad">Insecure Identifiers</h2>
+      <p>Unique IDs about your web browsing habits have been insecurely sent to third parties.</p>
+      <div class="hostsContainer">
+      <ul id="badHosts">
       {{#each identifiers}}
           {{#if supportsSSL}}
           <li>
-            {{this.hostname}}: <span title="{{this.unique_key}}">{{this.key_name}}</span>
+            <span class="unique_key">{{this.unique_key}}</span>
+            :) {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
           </li>
           {{/if}}
       {{/each}}
-      </ul>
-      These ones <em>cannot be secured</em>
-      <ul class="hostsContainer" id="goodHosts">
       {{#each identifiers}}
           {{#if supportsSSL}}
             <!-- -->
           {{else}}
           <li>
-            {{this.hostname}}: <span title="{{this.unique_key}}">{{this.key_name}}</span>
+            <span class="unique_key">{{this.unique_key}}</span>
+            :( {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
           </li>
           {{/if}}
       {{/each}}
       </ul>
+      </div>
+            <p class="small">Trackers marked with :) could send these IDs safely if {{hostName}} itself was secure.</p>
+      <p class="small">Those marked :( do not support secure transmission.</p>
     {{/if}}
 
 </script>

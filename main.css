@@ -15,7 +15,7 @@ h1 {
 	
 	color: white;
 	font: 'merriweather','Helvetica' , sans-serif;
-	background-color: #0072BB;
+	background-color: #d0000f;
 	width: 100%;
 	font-size: 18px;
 	text-align: center;
@@ -36,7 +36,14 @@ h2.good {
   background-color: #0072BB;
 }
 h2.bad {
-  background-color: red;
+  background-color: #d0000f;
+}
+
+.small {
+  font-size:0.85em;
+}
+p.small {
+  margin:0.2em 0;
 }
 
 #about {
@@ -60,13 +67,42 @@ h2.bad {
 
 .hostsContainer {
   font-size:0.9em;
-  max-height:100px;
-  overflow-y:auto;
-  padding-left:0;
+  position:relative;
+  padding-top:1em;
 }
 
+.hostsContainer ul {
+  max-height:150px;
+  padding-left:0;
+  overflow-y:auto;
+}
+
+.unique_key {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  display:none;
+  font-family: monospace;
+  overflow:hidden;
+  background:#2B303B;
+  color:#abf4f1;
+  padding:3px;
+  font-size:1.1em;
+}
+.hostsContainer li:hover .unique_key {
+  display:block;
+}
 .hostsContainer li:nth-child(odd) {
    background-color: #eee;
+}
+.hostsContainer li:hover, .hostsContainer li:nth-child(odd):hover {
+  cursor:pointer;
+  background:#d0000f;
+}
+.identifier {
+  font-family:monospace;
+  float:right;
 }
 
 #faq {
