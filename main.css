@@ -18,8 +18,7 @@ h1 {
 	background-color: #d0000f;
 	width: 100%;
 	font-size: 18px;
-	text-align: center;
-	padding: auto;
+	padding: 3px 5px;box-sizing: border-box;
 }
 
 h2 {
@@ -29,8 +28,8 @@ h2 {
   width: 100%;
   height: 100%;
   font-size: 18px;
-  text-align: center;
-  padding: auto;
+  padding: 3px 5px;
+  box-sizing: border-box;
 }
 h2.good {
   background-color: #0072BB;
@@ -82,6 +81,7 @@ p.small {
   top:0;
   left:0;
   right:0;
+  text-indent:15px;
   display:none;
   font-family: monospace;
   overflow:hidden;
@@ -90,15 +90,26 @@ p.small {
   padding:3px;
   font-size:1.1em;
 }
-.hostsContainer li:hover .unique_key {
+.unique_key i {
+  position:absolute;
+  left:-12px;
+  top:2px;
+}
+.hostsContainer li {
+  padding:1px 3px;
+}
+.hostsContainer li:hover .unique_key,
+.hostsContainer li.active .unique_key {
   display:block;
 }
 .hostsContainer li:nth-child(odd) {
    background-color: #eee;
 }
-.hostsContainer li:hover, .hostsContainer li:nth-child(odd):hover {
+.hostsContainer li:hover, .hostsContainer li:nth-child(odd):hover,
+.hostsContainer li.active, .hostsContainer li:nth-child(odd).active {
   cursor:pointer;
   background:#d0000f;
+  color: #fff;
 }
 .identifier {
   font-family:monospace;
