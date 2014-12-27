@@ -87,37 +87,60 @@
 		    {{/if}}
     	{{/if}}
     {{/if}}
-    {{#if ssl}}
-      <h2 class="good"><i class="fa fa-user"></i> Secure Identifiers</h2>
-    {{else}}
-      <h2 class="bad"><i class="fa fa-user"></i> Insecure Identifiers</h2>
-      <p>Unique IDs about your web browsing habits have been insecurely sent to third parties.</p>
-      <div class="hostsContainer">
-      <ul id="badHosts">
-      {{#each identifiers}}
-          {{#if supportsSSL}}
-          <li>
-            <span class="unique_key"><i class="fa fa-user"></i> {{this.unique_key}}</span>
-            <i class="fa fa-unlock"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
-          </li>
-          {{/if}}
-      {{/each}}
-      {{#each identifiers}}
-          {{#if supportsSSL}}
-            <!-- -->
-          {{else}}
-          <li>
-            <span class="unique_key"><i class="fa fa-user"></i> {{this.unique_key}}</span>
-            <i class="fa fa-eye"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
-          </li>
-          {{/if}}
-      {{/each}}
-      </ul>
-      </div>
-            <p class="small">Trackers marked with <i class="fa fa-unlock"></i> could send these IDs safely if {{hostName}} itself was secure.</p>
-      <p class="small">Those marked <i class="fa fa-eye"></i> do not support secure transmission.</p>
+    {{#if identifiers}}
+      {{#if ssl}}
+        <h2 class="good"><i class="fa fa-user"></i> Secure Identifiers</h2>
+        <div class="hostsContainer">
+        <ul id="badHosts">
+        {{#each identifiers}}
+            {{#if supportsSSL}}
+            <li>
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              <i class="fa fa-unlock"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+            </li>
+            {{/if}}
+        {{/each}}
+        {{#each identifiers}}
+            {{#if supportsSSL}}
+              <!-- -->
+            {{else}}
+            <li>
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              <i class="fa fa-eye"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+            </li>
+            {{/if}}
+        {{/each}}
+        </ul>
+        </div>
+      {{else}}
+        <h2 class="bad"><i class="fa fa-user"></i> Insecure Identifiers</h2>
+        <p>Unique IDs about your web browsing habits have been <strong>insecurely sent</strong> to third parties.</p>
+        <div class="hostsContainer">
+        <ul id="badHosts">
+        {{#each identifiers}}
+            {{#if supportsSSL}}
+            <li>
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              <i class="fa fa-unlock"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+            </li>
+            {{/if}}
+        {{/each}}
+        {{#each identifiers}}
+            {{#if supportsSSL}}
+              <!-- -->
+            {{else}}
+            <li>
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              <i class="fa fa-eye"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+            </li>
+            {{/if}}
+        {{/each}}
+        </ul>
+        </div>
+              <p class="small">Trackers marked with <i class="fa fa-unlock"></i> could send these IDs safely if {{hostName}} itself was secure.</p>
+        <p class="small">Those marked <i class="fa fa-eye"></i> do not support secure transmission.</p>
+      {{/if}}
     {{/if}}
-
 </script>
 <script>
   var templates = [];

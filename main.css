@@ -98,14 +98,12 @@ p.small {
 .hostsContainer li {
   padding:1px 3px;
 }
-.hostsContainer li:hover .unique_key,
 .hostsContainer li.active .unique_key {
   display:block;
 }
 .hostsContainer li:nth-child(odd) {
    background-color: #eee;
 }
-.hostsContainer li:hover, .hostsContainer li:nth-child(odd):hover,
 .hostsContainer li.active, .hostsContainer li:nth-child(odd).active {
   cursor:pointer;
   background:#d0000f;

@@ -32,14 +32,29 @@ window.addEventListener('message', function(event) {
   console.log(event);
     report.innerHTML = event.data.html;
     window.setTimeout(function(){
-      list = document.getElementById("badHosts");
-      highlightIdentifiers(list, 0, 0);
+      window.clearTimeout(window.timer);
+      var list = document.getElementById("badHosts");
+      addClass(list.children[0], "active");
+      window.timer = window.setTimeout(function(){
+        highlightIdentifiers(list);
+      }, 1000);
       for(i in list.children){
         list.children[i].onmouseover = function(){
           window.clearTimeout(window.timer);
           for(j in this.parentNode.children){
-            removeClass(this.parentNode.children[j], 'active');
+            if(this.parentNode.children[j] === this){
+              addClass(this, "active");
+            }
+            else{
+              removeClass(this.parentNode.children[j], 'active');
+            }
           }
+        }
+        list.onmouseout = function(){
+          window.clearTimeout(window.timer);
+          window.timer = window.setTimeout(function(){
+            highlightIdentifiers(list);
+          }, 1000);
         }
       }
     }, 10);
@@ -56,19 +71,24 @@ chrome.runtime.sendMessage({
 });
 });
 
-highlightIdentifiers = function(e, oldIndex, newIndex){
-  console.log(oldIndex, newIndex);
+highlightIdentifiers = function(e){
+  var oldIndex, newIndex;
+  for(var i = 0; i < e.children.length; i++){
+    if(hasClass(e.children[i], "active")){
+      oldIndex = i;
+    }
+  }
+  if(oldIndex === e.children.length-1){
+    newIndex = 0;
+  }
+  else {
+    newIndex = oldIndex+1;
+  }
   removeClass(e.children[oldIndex], "active");
   addClass(e.children[newIndex], "active");
   window.timer = window.setTimeout(function(){
-    console.log(e.children.length)
-    if(e.children.length == newIndex+1){
-      newerIndex = 0;
-    }
-    else{
-      var newerIndex = newIndex+1;
-    }
-    highlightIdentifiers(e, newIndex, newerIndex);
+    // window.clearTimeout(window.timer);
+    highlightIdentifiers(e);
   }, 1000);
 }
 
