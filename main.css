@@ -4,15 +4,19 @@ body {
   overflow-y:scroll;
 }
 
+p {
+  margin:0.6em 0;
+}
+
 div {
 	box-sizing: border-box;
-    width: auto;
-    position: relative;
-    overflow: visible; 
+  width: auto;
+  position: relative;
+  overflow: visible; 
 }
 
 h1 {
-	
+	margin:0;
 	color: white;
 	font: 'merriweather','Helvetica' , sans-serif;
 	background-color: #d0000f;
@@ -22,7 +26,7 @@ h1 {
 }
 
 h2 {
-
+  margin:0;
   color: white;
   font: 'merriweather','Helvetica' , sans-serif;
   width: 100%;
@@ -71,7 +75,7 @@ p.small {
 }
 
 .hostsContainer ul {
-  max-height:150px;
+  max-height:200px;
   padding-left:0;
   overflow-y:auto;
 }
@@ -85,6 +89,8 @@ p.small {
   display:none;
   font-family: monospace;
   overflow:hidden;
+  max-height:1em;
+  white-space:nowrap;
   background:#2B303B;
   color:#abf4f1;
   padding:3px;
@@ -129,9 +135,22 @@ p.small {
   padding-right:0.5em;
 }
 
+.menu {
+  margin:10px 0;
+}
+
+.menu span {
+  cursor:pointer;
+  color: #3a49c1;
+}
+
+.menu span.active {
+  color: inherit;
+}
+
 /* Twitter button */
 #widget
-{margin:0;padding:0;font:normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;color:#333;-webkit-user-select:none;-ms-user-select:none;-moz-user-select:none;user-select:none;white-space:nowrap;overflow:hidden;text-align:left;}
+{margin:0.6em 0;padding:0;font:normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;color:#333;-webkit-user-select:none;-ms-user-select:none;-moz-user-select:none;user-select:none;white-space:nowrap;overflow:hidden;text-align:left;}
 .rtl #widget{text-align:right;}
 .btn-o,.count-o,.btn,.btn .label,#count{display:inline-block;vertical-align:top;zoom:1;*display:inline;}
 .right #widget{text-align:right;}

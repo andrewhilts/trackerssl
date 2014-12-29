@@ -169,7 +169,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
 var TrackerSSL_RequestCollection = Backbone.Collection.extend({
       model: TrackerSSL_Request,
       comparator: function( collection ){
-        return( !collection.get( 'isIdentifier' ) );
+        return( !collection.get( 'supportsSSL' ) );
       }
 });
 // Only add unique hostnames to request collection
@@ -277,7 +277,10 @@ var TrackerSSL_Identifier = Backbone.Model.extend({
   supports_ssl: false
 });
 var TrackerSSL_IdentifierCollection = Backbone.Collection.extend({
-  model: TrackerSSL_Identifier
+  model: TrackerSSL_Identifier,
+  comparator: function( collection ){
+    return( !collection.get( 'supportsSSL' ) );
+  }
 });
 
 TrackerSSL_IdentifierCollection.prototype.add = function(identifier){

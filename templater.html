@@ -3,16 +3,16 @@
     {{#if ssl}}
     	<h1 id="leadMessage">This website was served through SSL!</h1>
     	{{#if uniqueHosts}}
-	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page support SSL.</p>
+	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be protecting you.
 	    	{{#if completeTrackersSSL}}
-	    		<p>Given {{hostName}} only uses SSL-supporting trackers, why don&lsquo;t you tweet your thanks to them?</p>
+	    		Tell {{hostName}} to fix it.</p>
           <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
             </div>
           </div>
 	    	{{else}}
-	    		<p>Since some of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell {{hostName}} to ensure its trackers support SSL?</strong></p>
+	    		Tell {{hostName}} to fix it.</p></p>
           <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Might%20wanna%20fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
@@ -20,8 +20,7 @@
           </div>
 	    	{{/if}}
 	    {{else}}
-	    	<p id="trackerCount">No 3rd party trackers on this site.</p>
-	    	<p>Why don&lsquo;t you thank {{hostName}} for supporting SSL?</p>
+	    	<p id="trackerCount">No 3rd party trackers on this site. Why don&lsquo;t you thank {{hostName}} for supporting SSL?</p>
         <div id="widget">
           <div class="btn-o" data-scribe="component:button">
             <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{hostName}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
@@ -32,16 +31,16 @@
     	{{#if couldBeSSL}}
     		<h1 id="leadMessage">This website supports SSL but it&lsquo;s not the default!</h1>
     		{{#if uniqueHosts}}
-		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
+		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be protecting you.
 		    	{{#if majorityTrackersSSL}}
-		    		<p>Since a majority of these trackers are secure, <strong>why don&lsquo;t you tell {{hostName}} to make SSL the default?</strong></p>
+		    		Tell {{hostName}} to fix it.</p></p>
             <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}}%20Why%20don't%20you%20do%20your%20part%20in%20the%20fight%20against%20mass%20surveillance%20and%20enable%20HTTPS%20by%20default%3F%20%23trackerssl" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
             </div>
           </div>
 		    	{{else}}
-		    		<p>Since many of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell {{hostName}} to use more responsible ad networks?</strong></p>
+		    		Tell {{hostName}} to fix it.</p></p>
             <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
@@ -60,16 +59,16 @@
     	{{else}}
     		<h1 id="leadMessage">This website is insecure.</h1>
 			{{#if uniqueHosts}}
-		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the {{uniqueHostsTotal}} third party trackers on this page could support SSL.</p>
+		    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be protecting you.
 		    	{{#if majorityTrackersSSL}}
-		    		<p>Since a majority of these trackers are secure, <strong>why don&lsquo;t you tell {{hostName}} to support SSL too?</strong></p>
+		    		Tell {{hostName}} to fix it.</p>
             <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20support%20SSL.%20Why%20don't%20you%3F%20Do%20your%20part%20to%20fight%20mass%20surveillance.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
             </div>
           </div>
 		    	{{else}}
-		    		<p>Since many of these trackers aren&lsquo;t secure, <strong>why don&lsquo;t you tell  {{hostName}} to use more responsible ad networks?</strong></p>
+		    		Tell {{hostName}} to fix it.</p>
             <div id="widget">
             <div class="btn-o" data-scribe="component:button">
               <a href="https://twitter.com/intent/tweet?text=Hey%20{{hostName}},%20most%20of%20your%20ad%20trackers%20don't%20support%20SSL.%20Consider%20some%20that%20do!%20Do%20your%20part%20in%20fighting%20mass%20surveillance.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
@@ -88,6 +87,13 @@
     	{{/if}}
     {{/if}}
     {{#if identifiers}}
+      <div class="menu">
+        <span id="identifierBtn" class="active">Identifiers</span> | 
+        <span id="trackerBtn">All Trackers</span>
+      </div>
+    {{/if}}
+    {{#if identifiers}}
+      <div id="identifiers">
       {{#if ssl}}
         <h2 class="good"><i class="fa fa-user"></i> Secure Identifiers</h2>
         <div class="hostsContainer">
@@ -106,7 +112,7 @@
             {{else}}
             <li>
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-eye"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+              <i class="fa fa-ban"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
             </li>
             {{/if}}
         {{/each}}
@@ -118,27 +124,46 @@
         <div class="hostsContainer">
         <ul id="badHosts">
         {{#each identifiers}}
-            {{#if supportsSSL}}
-            <li>
-              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-unlock"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
-            </li>
-            {{/if}}
-        {{/each}}
-        {{#each identifiers}}
-            {{#if supportsSSL}}
-              <!-- -->
+            {{#if @first}}
+            <li class="active">
             {{else}}
             <li>
-              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-eye"></i> {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
-            </li>
             {{/if}}
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              {{#if supportsSSL}}
+                <i class="fa fa-unlock"></i>
+              {{else}}
+                <i class="fa fa-ban"></i>
+              {{/if}}
+              {{this.hostname}} <span class="identifier">{{this.key_name}}</span>
+            </li>
         {{/each}}
         </ul>
+        <p class="small"><strong>Legend</strong></p>
+        <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
+        <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
         </div>
-              <p class="small">Trackers marked with <i class="fa fa-unlock"></i> could send these IDs safely if {{hostName}} itself was secure.</p>
-        <p class="small">Those marked <i class="fa fa-eye"></i> do not support secure transmission.</p>
+                </div>
+        <div id="trackers" style="display:none">
+        <h2 class="bad"><i class="fa fa-cloud-upload"></i> All trackers</h2>
+        <p>{{uniqueHostsTotal}} third parties know you are on this webpage.</p>
+        <div class="hostsContainer">
+        <ul>
+        {{#each requests}}
+            <li>
+              {{#if supportsSSL}}
+                <i class="fa fa-unlock"></i>
+              {{else}}
+                <i class="fa fa-ban"></i>
+              {{/if}}
+              {{this.hostname}}
+            </li>
+        {{/each}}
+        </ul>
+                <p class="small"><strong>Legend</strong></p>
+        <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
+        <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+        </div>
       {{/if}}
     {{/if}}
 </script>

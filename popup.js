@@ -26,18 +26,26 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
      }
 });
 });
-
+// var curIndex = 0;
 window.addEventListener('message', function(event) {
   if (event.data.html) {
-  console.log(event);
+    console.log(event);
+    // var listy = document.getElementById("badHosts");
+    // if(listy && listy.children.length > 0){
+    //   for(i in listy){
+    //     if(hasClass(listy[i], "active")){
+    //       curIndex = i;
+    //     }
+    //   }
+    // }
     report.innerHTML = event.data.html;
+    initMenu();
     window.setTimeout(function(){
       window.clearTimeout(window.timer);
       var list = document.getElementById("badHosts");
-      addClass(list.children[0], "active");
-      window.timer = window.setTimeout(function(){
-        highlightIdentifiers(list);
-      }, 1000);
+      // window.timer = window.setTimeout(function(){
+      //   highlightIdentifiers(list);
+      // }, 1000);
       for(i in list.children){
         list.children[i].onmouseover = function(){
           window.clearTimeout(window.timer);
@@ -50,17 +58,37 @@ window.addEventListener('message', function(event) {
             }
           }
         }
-        list.onmouseout = function(){
-          window.clearTimeout(window.timer);
-          window.timer = window.setTimeout(function(){
-            highlightIdentifiers(list);
-          }, 1000);
-        }
+      //   list.onmouseout = function(){
+      //     window.clearTimeout(window.timer);
+      //     window.timer = window.setTimeout(function(){
+      //       highlightIdentifiers(list);
+      //     }, 1000);
+      //   }
       }
     }, 10);
   }
   // document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 200;
 });
+
+var initMenu = function(){
+  var trackerEl = document.getElementById('trackers');
+  var identifierEl = document.getElementById('identifiers');
+  var trackerBtnEl = document.getElementById('trackerBtn');
+  var identifierBtnEl = document.getElementById('identifierBtn');
+
+  trackerBtnEl.onclick = function(){
+      addClass(trackerBtnEl, "active");
+      removeClass(identifierBtnEl, "active");
+      trackerEl.style.display = "block";
+      identifierEl.style.display = "none";
+  }
+  identifierBtnEl.onclick = function(){
+      addClass(identifierBtnEl, "active");
+      removeClass(trackerBtnEl, "active");
+      identifierEl.style.display = "block";
+      trackerEl.style.display = "none";
+  }
+}
 
 chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
 var tabid = tabs[0].id;
@@ -90,25 +118,6 @@ highlightIdentifiers = function(e){
     // window.clearTimeout(window.timer);
     highlightIdentifiers(e);
   }, 1000);
-}
-
-window.onload = function(){
-  var reportEl = document.getElementById('report');
-  // var faqEl = document.getElementById('faq');
-  // var toggleEl = document.getElementById('about');
-  // var toggleState = 1;
-  // toggleEl.onclick = function(){
-  //   if(toggleState === 1){
-  //     reportEl.style.display = "none";
-  //     faqEl.style.display = "block";
-  //     toggleState = 2;
-  //   }
-  //   else{
-  //     reportEl.style.display = "block";
-  //     faqEl.style.display = "none";
-  //     toggleState = 1;
-  //   }
-  // }
 }
 
 var populateTrackerLists = function(tabData){
