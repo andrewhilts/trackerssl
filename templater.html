@@ -114,7 +114,7 @@
             {{/if}}
             {{#if supportsSSL}}
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-unlock"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              <i class="fa fa-lock"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
             {{else}}
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
               <i class="fa fa-ban"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
@@ -145,11 +145,16 @@
             </li>
         {{/each}}
         </ul>
-        <p class="small"><strong>Legend</strong></p>
-        <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
-        <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
         </div>
       {{/if}}
+              <p class="small"><strong>Legend</strong></p>
+        {{#if ssl}}
+          <p class="small"><i class="fa fa-lock"></i> Tracking IDs <strong>is</strong> are sent with some safety measures.</p>
+          <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+        {{else}}
+          <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
+          <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+        {{/if}}
       </div>
     {{/if}}
     {{#if uniqueHosts}}
@@ -158,25 +163,48 @@
         <p>At least {{uniqueHostsTotal}} third parties know you are on this webpage.</p>
         <div class="hostsContainer">
         <ul id="thirdPartyHosts">
-        {{#each requests}}
-            {{#if @first}}
-            <li class="active">
-            {{else}}
-            <li>
-            {{/if}}
-              <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
-              {{#if supportsSSL}}
-                <i class="fa fa-unlock"></i>
+        {{#if ssl}}
+          {{#each requests}}
+              {{#if @first}}
+              <li class="active">
               {{else}}
-                <i class="fa fa-ban"></i>
+              <li>
               {{/if}}
-              <span>{{this.label}}</span>
-            </li>
-        {{/each}}
+                <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
+                {{#if supportsSSL}}
+                  <i class="fa fa-lock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                <span>{{this.label}}</span>
+              </li>
+          {{/each}}
+        {{else}}
+          {{#each requests}}
+              {{#if @first}}
+              <li class="active">
+              {{else}}
+              <li>
+              {{/if}}
+                <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
+                {{#if supportsSSL}}
+                  <i class="fa fa-unlock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                <span>{{this.label}}</span>
+              </li>
+          {{/each}}
+        {{/if}}
         </ul>
                 <p class="small"><strong>Legend</strong></p>
+        {{#if ssl}}
+        <p class="small"><i class="fa fa-lock"></i> Tracker <strong>is</strong> tracking with some safety measures.</p>
+        <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+        {{else}}
         <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
         <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+        {{/if}}
         </div>
       {{/if}}
       </div>

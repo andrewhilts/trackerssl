@@ -72,6 +72,7 @@ var initMenu = function(){
   var list = document.getElementById("badHosts");
   var list2 = document.getElementById("thirdPartyHosts");
 
+  if(trackerBtnEl){
   trackerBtnEl.onclick = function(){
       addClass(trackerBtnEl, "active");
       removeClass(identifierBtnEl, "active");
@@ -80,6 +81,8 @@ var initMenu = function(){
       window.identifiersClass = "";
       window.trackersClass = "active";
   }
+}
+if(identifierBtnEl){
   identifierBtnEl.onclick = function(){
       addClass(identifierBtnEl, "active");
       removeClass(trackerBtnEl, "active");
@@ -88,18 +91,21 @@ var initMenu = function(){
       window.identifiersClass = "active";
       window.trackersClass = "";
   }
-
+}
 
     // window.timer = window.setTimeout(function(){
     //   highlightIdentifiers(list);
     // }, 1000);
+if(list){
     for(i in list.children){
       setMouseOver(list.children[i]);
     }
+  }
+  if(list2){
     for(i in list2.children){
       setMouseOver(list2.children[i]);
     }
-
+}
 }
 
 var setMouseOver = function(e){
