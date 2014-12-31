@@ -34,5 +34,8 @@
     "webRequestBlocking", 
     "http://*/*",
     "https://*/*"
+  ],
+  "web_accessible_resources": [
+    "disconnect.json"
   ]
 }

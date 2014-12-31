@@ -1,10 +1,24 @@
 var wr = chrome.webRequest;
 
+var hostnameObj;
+var hostnameObjRequest = new XMLHttpRequest();
+
+hostnameObjRequest.open("GET", "disconnect.json", true);
+  hostnameObjRequest.onreadystatechange = function(){
+    if(hostnameObjRequest.readyState == 4){
+      if (hostnameObjRequest.status == 200) {
+        hostnameObj = JSON.parse(hostnameObjRequest.responseText);
+      }
+    }
+  };
+hostnameObjRequest.send();
+
 var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(params){
     var that = this;
     this.set('url', params.url);
     this.generateURLfragments();
+    this.setLabel();
     this.set('isIdentifier', false);
 
     this.set('requests', new TrackerSSL_RequestCollection());
@@ -19,6 +33,14 @@ var TrackerSSL_Request = Backbone.Model.extend({
     }
     else{
       this.set('isThirdParty', false);
+    }
+  },
+  setLabel: function(){
+    if(hostnameObj && hostnameObj[this.get('domain')]){
+      this.set('label', hostnameObj[this.get('domain')]);
+    }
+    else{
+      this.set('label', this.get('hostname'));
     }
   },
   generateURLfragments: function(){
@@ -159,7 +181,8 @@ var TrackerSSL_Request = Backbone.Model.extend({
         this.set("identifier", new TrackerSSL_Identifier({
           "key_name": name,
           "unique_key": value,
-          "hostname": this.get('hostname')
+          "hostname": this.get('hostname'),
+          "label": this.get('label')
         }));
       }
     }
@@ -175,7 +198,7 @@ var TrackerSSL_RequestCollection = Backbone.Collection.extend({
 // Only add unique hostnames to request collection
 TrackerSSL_RequestCollection.prototype.add = function(request){
   var isDupe = this.any(function(_request){
-    return _request.get('hostname') === request.get('hostname');
+    return _request.get('domain') === request.get('domain');
   });
   return isDupe ? false : Backbone.Collection.prototype.add.call(this, request);
 }
@@ -206,6 +229,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     var url = this.get('url');
     var testResults = {
       tab:                  this.get('tabid'),
+      domain:               url.get('domain'),
       hostName:             url.get('hostname'),
       ssl:                  url.isSSL(),
       couldBeSSL:           url.get('couldBeSSL'),
@@ -274,6 +298,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
 var TrackerSSL_Identifier = Backbone.Model.extend({
   unique_key: null,
   hostname: null,
+  label: null,
   supports_ssl: false
 });
 var TrackerSSL_IdentifierCollection = Backbone.Collection.extend({

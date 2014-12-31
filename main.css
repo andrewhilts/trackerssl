@@ -19,10 +19,16 @@ h1 {
 	margin:0;
 	color: white;
 	font: 'merriweather','Helvetica' , sans-serif;
-	background-color: #d0000f;
 	width: 100%;
 	font-size: 18px;
 	padding: 3px 5px;box-sizing: border-box;
+}
+
+.good h1 {
+  background: #40a300;
+}
+.bad h1 {
+  background: #d0000f;
 }
 
 h2 {
@@ -35,10 +41,10 @@ h2 {
   padding: 3px 5px;
   box-sizing: border-box;
 }
-h2.good {
-  background-color: #0072BB;
+.good h2 {
+  background-color: #40a300;
 }
-h2.bad {
+.bad h2 {
   background-color: #d0000f;
 }
 
@@ -112,8 +118,14 @@ p.small {
 }
 .hostsContainer li.active, .hostsContainer li:nth-child(odd).active {
   cursor:pointer;
-  background:#d0000f;
   color: #fff;
+}
+
+.bad .hostsContainer li.active, .bad .hostsContainer li:nth-child(odd).active {
+  background:#d0000f;
+}
+.good .hostsContainer li.active, .good .hostsContainer li:nth-child(odd).active {
+  background: #40a300
 }
 .identifier {
   font-family:monospace;
@@ -140,12 +152,20 @@ p.small {
 }
 
 .menu span {
+  display:inline-block;
   cursor:pointer;
   color: #3a49c1;
 }
 
 .menu span.active {
   color: inherit;
+  font-weight:bold;
+}
+
+#identifiers, #trackers {display: none;}
+
+#identifiers.active, #trackers.active {
+  display:block;
 }
 
 /* Twitter button */
