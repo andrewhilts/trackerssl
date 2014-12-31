@@ -1,6 +1,18 @@
 #TrackerSSL
 
-[Install TrackerSSL](https://github.com/andrewhilts/trackerssl/blob/master/trackerssl.crx?raw=true)
+[Download TrackerSSL](https://github.com/andrewhilts/trackerssl/blob/master/trackerssl.crx?raw=true) (Works best with ad-blocking extensions disabled)
+
+###Installing Third Party Add-Ons
+
+TrackerSSL is still under development and hasn't yet been subitted to the Google Chrome store. Please follow these instructions from [Google](https://support.google.com/chrome_webstore/answer/2664769?p=crx_warning&rd=1) to successfully install the extension:
+
+We recommend you only add extensions from other websites that you trust. In Chrome, you can follow these steps to add the extension:
+
+1. Download the extension file from the website and save it to your computer.
+1. Click the Chrome menu icon Chrome menu on the browser toolbar.
+1. Select Tools > Extensions.
+1. Locate the extension file on your computer and drag the file onto the Extensions page.
+1. Review the list of permissions in the dialog that appears. If you would like to proceed, click Install.
 
 The NSA and other surveillance agencies monitor network traffic. By scanning the content of this traffic, they learn your habits, your interests, your political views, and more. As the Snowden revelations indicate, this monitoring is done on a mass level, affecting whole populations.
 
