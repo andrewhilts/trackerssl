@@ -1,5 +1,6 @@
 <script src="app/bower_components/handlebars/handlebars.min.js"></script>
 <script id="hello-world-template" type="text/x-handlebars-template">
+{{#if tab}}
   {{#if ssl}}
     <div class="good">
   {{else}}
@@ -208,6 +209,13 @@
         </div>
       {{/if}}
       </div>
+{{else}}
+<div class="bad">  
+  <h1>Error</h1>
+  <p>Page loaded before extension initialized.</p>
+  <p>Please <strong>Refresh the page</strong> to see the report!</p>
+</div>
+{{/if}}
 </script>
 <script>
   var templates = [];
