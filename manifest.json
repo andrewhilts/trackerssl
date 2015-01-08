@@ -1,9 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Tracker SSL",
-  "version": "1",
+  "version": "0.0.1",
   // "default_locale": "en",
   "description": "Monitors and tests known ad trackers for SSL supprt",
+  "icons": {
+      "16": "img/trackerssl16.png",
+      "48": "img/trackerssl48.png",
+      "128": "img/trackerssl128.png"
+    },
   "background": {
     "scripts": [
       "app/bower_components/underscore/underscore-min.js", 
