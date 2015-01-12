@@ -173,7 +173,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
       if(name.match(".*id$") || name.match("ident") || name.match("_id_")){
         isIdent = true;
       }
-      else if(value.match(".*id$") || value.match("ident") || value.match("_id_") || value.match("id=")){
+      else if(value.match(".*id$") || value.match("ident") || value.match("_id_") || value.match("id=") || isGUID(value)){
         isIdent = true;
       }
       if(isIdent){
@@ -188,6 +188,17 @@ var TrackerSSL_Request = Backbone.Model.extend({
     }
   }
 });
+
+var isGUID = function(testString){
+    var regexMatch;
+    var GUIDPattern = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$";
+    regexMatch = testString.match(GUIDPattern);   
+    if(regexMatch !== null){
+        return true;
+    }
+    return false;
+}
+
 
 var TrackerSSL_RequestCollection = Backbone.Collection.extend({
       model: TrackerSSL_Request,
