@@ -2,30 +2,49 @@
 <script id="hello-world-template" type="text/x-handlebars-template">
 {{#if tab}}
   {{#if ssl}}
-    <div class="good">
+      {{#if brokenSSL}}
+        <div class="bad">
+      {{else}}
+        <div class="good">
+      {{/if}}
   {{else}}
     <div class="bad">
   {{/if}}
 
     {{#if ssl}}
-    	<h1 id="leadMessage">This website is secured</h1>
+      {{#if brokenSSL}}
+        <h1 id="leadMessage">Website has a security hole.</h1>
+      {{else}}
+        <h1 id="leadMessage">This website is secured</h1>
+      {{/if}}
     	{{#if uniqueHosts}}
-	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site are helping protect you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.
-	    	{{#if completeTrackersSSL}}
-	    		Why not thank {{domain}} for being secure?</p>
-          <div id="widget">
-            <div class="btn-o" data-scribe="component:button">
-              <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{domain}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+        {{#if brokenSSL}}
+  	    	<p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be helping protect you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.</p><p>
+  	    		But, even though {{domain}} uses HTTPS, there's at least one third party that's been communicating insecurely. </p>
+            <p>Tell {{domain}} to fix it.</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thanks%20{{domain}}%20for%20supporting%20SSL%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
             </div>
-          </div>
-	    	{{else}}
-	    		Tell {{domain}} to fix it.</p>
-          <div id="widget">
-            <div class="btn-o" data-scribe="component:button">
-              <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{domain}}%20for%20supporting%20SSL%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Might%20wanna%20fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+        {{else}}
+          <p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site are helping protect you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.
+          {{#if completeTrackersSSL}}
+            Why not thank {{domain}} for being secure?</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{domain}}%20for%20supporting%20SSL%20and%20doing%20your%20part%20to%20fight%20mass%20surveillance!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
             </div>
-          </div>
-	    	{{/if}}
+          {{else}}
+            Tell {{domain}} to fix it.</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{domain}}%20for%20supporting%20SSL%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Might%20wanna%20fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
+            </div>
+          {{/if}}
+        {{/if}}
 	    {{else}}
 	    	<p id="trackerCount">No 3rd party trackers on this site. Why don&lsquo;t you thank {{domain}} for supporting HTTPS?</p>
         <div id="widget">
@@ -103,8 +122,14 @@
     {{#if identifiers}}
       <div id="identifiers" class="{{identifiersClass}}">
       {{#if ssl}}
+        {{#if brokenSSL}}
+        <h2><i class="fa fa-user"></i> Insecure Identifiers</h2>
+        <p>Unique IDs about your web browsing habits have been <strong>insecurely sent</strong> to third parties.</p>
+        {{else}}
         <h2><i class="fa fa-user"></i> Secure Identifiers</h2>
         <p>Unique IDs about your web browsing habits have been <strong>securely sent</strong> to third parties.</p>
+        {{/if}}
+        
         <div class="hostsContainer">
         <ul id="badHosts">
         {{#each identifiers}}
@@ -113,12 +138,22 @@
             {{else}}
             <li>
             {{/if}}
-            {{#if supportsSSL}}
+            {{#if ../brokenSSL}}
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-lock"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              {{#if supportsSSL}}
+                <i class="fa fa-unlock"></i>
+              {{else}}
+                <i class="fa fa-ban"></i>
+              {{/if}}
+              <span>{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
             {{else}}
-              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
-              <i class="fa fa-ban"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+            {{#if supportsSSL}}
+                <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+                <i class="fa fa-lock"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              {{else}}
+                <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+                <i class="fa fa-ban"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              {{/if}}
             {{/if}}
             </li>
         {{/each}}
@@ -150,8 +185,13 @@
       {{/if}}
               <p class="small"><strong>Legend</strong></p>
         {{#if ssl}}
+          {{#if brokenSSL}}
+            <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+          {{else}}
           <p class="small"><i class="fa fa-lock"></i> Tracking IDs <strong>are</strong> sent with some safety measures.</p>
           <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+          {{/if}}
         {{else}}
           <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
           <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
@@ -172,11 +212,20 @@
               <li>
               {{/if}}
                 <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
-                {{#if supportsSSL}}
+                {{#if ../brokenSSL}}
+                  {{#if supportsSSL}}
+                  <i class="fa fa-unlock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                {{else}}
+                  {{#if supportsSSL}}
                   <i class="fa fa-lock"></i>
                 {{else}}
                   <i class="fa fa-ban"></i>
                 {{/if}}
+                {{/if}}
+                
                 <span>{{this.label}}</span>
               </li>
           {{/each}}
@@ -200,8 +249,13 @@
         </ul>
                 <p class="small"><strong>Legend</strong></p>
         {{#if ssl}}
-        <p class="small"><i class="fa fa-lock"></i> Tracker <strong>is</strong> tracking with some safety measures.</p>
-        <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+          {{#if brokenSSL}}
+            <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+          {{else}}
+            <p class="small"><i class="fa fa-lock"></i> Tracker <strong>is</strong> tracking with some safety measures.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+          {{/if}}
         {{else}}
         <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
         <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>

@@ -118,6 +118,24 @@ var TrackerSSL_Request = Backbone.Model.extend({
       throw(new Error("No requests made from this URL"));
     }
   },
+  hasBrokenHTTPS: function(){
+    var requests = this.get('requests');
+    if(requests && this.isSSL()){
+      var urls_not_https = requests.where({'protocol': "http"});
+      if(urls_not_https.length > 0){
+        this.set('hasBrokenHTTPS', true);
+        return true;
+      }
+      else{
+        this.set('hasBrokenHTTPS', false);
+        return false;
+      }
+    }
+    else{
+      this.set('hasBrokenHTTPS', false);
+      return false;
+    }
+  },
   getIdentifiers: function(){
     var requests = this.get('requests');
     if(requests){
@@ -248,6 +266,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       uniqueHostsTotal:     url.getTotalUniqueHosts(),
       goodURL:              url.getSecureHosts(),
       badURL:               url.getInsecureHosts(),
+      brokenSSL:            url.hasBrokenHTTPS(),
       identifiers:          url.getIdentifiers(),
       percentageSSL:        url.getPercentageSSL(),
       majorityTrackersSSL:  url.isMajorityTrackersSSL(),
@@ -290,14 +309,8 @@ var TrackerSSL_Tab = Backbone.Model.extend({
   },
   determineColor: function(){
     var color;
-    if(this.get('url').isSSL()){
+    if(this.get('url').isSSL() && !this.get('url').hasBrokenHTTPS()){
       color = "#40a300";
-    }
-    else if(this.get('url').get('badSSL')){
-      color = "#ddd30f";
-    }
-    else if(this.get('url').isMajorityTrackersSSL()){
-      color = "#f96b09";
     }
     else{
       color = "#d0000f";
