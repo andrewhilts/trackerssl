@@ -18,6 +18,7 @@
       "app/https-everywhere/rule_list.js", 
       "app/https-everywhere/rules.js", 
       "app/https-everywhere/https_e_bg.js",
+      "app/twitter-list.js",
       "background.js"
     ]
   },

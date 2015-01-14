@@ -13,11 +13,14 @@ hostnameObjRequest.open("GET", "disconnect.json", true);
   };
 hostnameObjRequest.send();
 
+var twitterHostnames = TwitterList.getList();
+
 var TrackerSSL_Request = Backbone.Model.extend({
   initialize: function(params){
     var that = this;
     this.set('url', params.url);
     this.generateURLfragments();
+    this.setTwitterHandle();
     this.setLabel();
     this.set('isIdentifier', false);
 
@@ -42,6 +45,19 @@ var TrackerSSL_Request = Backbone.Model.extend({
     else{
       this.set('label', this.get('hostname'));
     }
+  },
+  setTwitterHandle: function(){
+    var twitterHandle;
+    if(twitterHostnames[this.get('hostname')]){
+      twitterHandle = twitterHostnames[this.get('hostname')];
+    }
+    else if(twitterHostnames[this.get('domain')]){
+      twitterHandle = twitterHostnames[this.get('domain')];
+    }
+    else{
+      twitterHandle = this.get('domain');
+    }
+    this.set('twitterHandle', twitterHandle);
   },
   generateURLfragments: function(){
       var oldURL = this.get('url'),
@@ -188,7 +204,7 @@ var TrackerSSL_Request = Backbone.Model.extend({
       cookie = cookies[i];
       name = cookie.name.toLowerCase();
       value = cookie.value.toLowerCase();
-      if(name.match(".*id$") || name.match("ident") || name.match("_id_")){
+      if(name.match(".*id$") || name.match("ident") || name.match("_id_") || name.match("fingerprint")){
         isIdent = true;
       }
       else if(value.match(".*id$") || value.match("ident") || value.match("_id_") || value.match("id=") || isGUID(value)){
@@ -260,6 +276,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       tab:                  this.get('tabid'),
       domain:               url.get('domain'),
       hostName:             url.get('hostname'),
+      twitter:              url.get('twitterHandle'),
       ssl:                  url.isSSL(),
       couldBeSSL:           url.get('couldBeSSL'),
       uniqueHosts:          url.getUniqueHosts(),
