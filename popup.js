@@ -2,6 +2,7 @@ var container = document.getElementById('container');
 var report = document.getElementById('report');
 window.identifiersClass = "active";
 window.trackersClass = "";
+window.activeIndex = 0;
 
  var iframe = document.createElement('iframe');
  iframe.setAttribute("id", "sandbox");
@@ -31,6 +32,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       message.trackersBtnClass = window.trackersClass;
       message.identifiersClass = window.identifiersClass;
       message.trackersClass = window.trackersClass;
+      message.activeIndex = window.activeIndex;
       populateTrackerLists(message, window.visibleEL);
      }
 });
@@ -47,7 +49,15 @@ window.addEventListener('message', function(event) {
     //     }
     //   }
     // }
-    report.innerHTML = event.data.html;
+    el = document.createElement( 'div' );
+    el.innerHTML = event.data.html;
+    if(el.querySelector("#badHosts")){
+      el.querySelector("#badHosts").children[window.activeIndex].className = "active";
+    }
+    if(el.querySelector("#thirdPartyHosts")){
+      el.querySelector("#thirdPartyHosts").children[window.activeIndex].className = "active";
+    }
+    report.innerHTML = el.innerHTML;
     window.setTimeout(function(){
     initMenu();
       window.clearTimeout(window.timer);
@@ -114,6 +124,7 @@ var setMouseOver = function(e){
     for(j in this.parentNode.children){
       if(this.parentNode.children[j] === this){
         addClass(this, "active");
+        window.activeIndex = j;
       }
       else{
         removeClass(this.parentNode.children[j], 'active');

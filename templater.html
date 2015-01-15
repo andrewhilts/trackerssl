@@ -133,11 +133,7 @@
         <div class="hostsContainer">
         <ul id="badHosts">
         {{#each identifiers}}
-            {{#if @first}}
-            <li class="active">
-            {{else}}
             <li>
-            {{/if}}
             {{#if ../brokenSSL}}
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
               {{#if supportsSSL}}
@@ -166,11 +162,7 @@
         <div class="hostsContainer">
         <ul id="badHosts">
         {{#each identifiers}}
-            {{#if @first}}
-            <li class="active">
-            {{else}}
             <li>
-            {{/if}}
               <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
               {{#if supportsSSL}}
                 <i class="fa fa-unlock"></i>
@@ -206,11 +198,7 @@
         <ul id="thirdPartyHosts">
         {{#if ssl}}
           {{#each requests}}
-              {{#if @first}}
-              <li class="active">
-              {{else}}
               <li>
-              {{/if}}
                 <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
                 {{#if ../brokenSSL}}
                   {{#if supportsSSL}}
@@ -231,11 +219,7 @@
           {{/each}}
         {{else}}
           {{#each requests}}
-              {{#if @first}}
-              <li class="active">
-              {{else}}
               <li>
-              {{/if}}
                 <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
                 {{#if supportsSSL}}
                   <i class="fa fa-unlock"></i>
