@@ -68,10 +68,12 @@ window.addEventListener('message', function(event) {
       //       highlightIdentifiers(list);
       //     }, 1000);
       //   }
-
+      document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + "px";
+      window.setTimeout(function(){
+      document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 1 + "px";
+      }, 10);
     }, 10);
   }
-  // document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 200;
 });
 
 var initMenu = function(){
