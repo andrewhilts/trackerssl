@@ -60,30 +60,29 @@ var TrackerSSL_Request = Backbone.Model.extend({
     this.set('twitterHandle', twitterHandle);
   },
   generateURLfragments: function(){
-      var oldURL = this.get('url'),
-      newURL;
-      if(!oldURL){
-        throw(new Error("No initial URL provided"));
-      }
-
-      // Parse old URL
-      newURL = new URI(oldURL);
-      // Normalise hosts such as "www.example.com."
-      // From EFF's HTTPS Everywhere
-      var canonical_host = newURL.hostname();
-      if (canonical_host.charAt(canonical_host.length - 1) == ".") {
-        while (canonical_host.charAt(canonical_host.length - 1) == ".")
-          canonical_host = canonical_host.slice(0,-1);
-        newURL.hostname(canonical_host);
-      }
-      this.set({
-        hostname: newURL.hostname(),
-        domain: newURL.domain(),
-        path: newURL.path(),
-        protocol: newURL.protocol(),
-        href: newURL.href()
-      });
-    },
+    var oldURL = this.get('url'),
+    newURL;
+    if(!oldURL){
+      throw(new Error("No initial URL provided"));
+    }
+    // Parse old URL
+    newURL = new URI(oldURL);
+    // Normalise hosts such as "www.example.com."
+    // From EFF's HTTPS Everywhere
+    var canonical_host = newURL.hostname();
+    if (canonical_host.charAt(canonical_host.length - 1) == ".") {
+      while (canonical_host.charAt(canonical_host.length - 1) == ".")
+        canonical_host = canonical_host.slice(0,-1);
+      newURL.hostname(canonical_host);
+    }
+    this.set({
+      hostname: newURL.hostname(),
+      domain: newURL.domain(),
+      path: newURL.path(),
+      protocol: newURL.protocol(),
+      href: newURL.href()
+    });
+  },
   isSSL: function(){
     return (this.get('protocol') === "https");
   },
