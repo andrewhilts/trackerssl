@@ -4,13 +4,13 @@ var hostnameObj;
 var hostnameObjRequest = new XMLHttpRequest();
 
 hostnameObjRequest.open("GET", "disconnect.json", true);
-  hostnameObjRequest.onreadystatechange = function(){
-    if(hostnameObjRequest.readyState == 4){
-      if (hostnameObjRequest.status == 200) {
-        hostnameObj = JSON.parse(hostnameObjRequest.responseText);
-      }
+hostnameObjRequest.onreadystatechange = function(){
+  if(hostnameObjRequest.readyState == 4){
+    if (hostnameObjRequest.status == 200) {
+      hostnameObj = JSON.parse(hostnameObjRequest.responseText);
     }
-  };
+  }
+};
 hostnameObjRequest.send();
 
 var twitterHostnames = TwitterList.getList();
@@ -463,7 +463,6 @@ chrome.webRequest.onBeforeRequest.addListener(
   {
     urls: ['http://*/*', 'https://*/*']
   }
-  , ["blocking"]
 );
 
 chrome.runtime.onMessage.addListener(tabMessageController);

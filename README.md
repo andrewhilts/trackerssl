@@ -18,7 +18,7 @@ The NSA and other surveillance agencies monitor network traffic. By scanning the
 
 As reported by the [Washington Post](http://www.washingtonpost.com/blogs/the-switch/wp/2013/12/11/news-sites-could-protect-your-privacy-with-encryption-heres-why-they-probably-wont/), news websites are particularly important for this sort of monitoring. By looking at what news articles one reads, analysis can reveal what current events and political views someone might hold.
 
-There's a simple way news and all other websites can make this sort of mass monitoring less feasible. They can implement SSL by default. This will encrypt the traffic between you and the website your visiting, and hide the url and the title of each page you hit.
+There's a simple way news and all other websites can make this sort of mass monitoring less feasible. They can implement SSL by default. This will encrypt the traffic between you and the website you're visiting, and hide the url and the title of each page you hit.
 
 But news websites aren't implementing SSL. The "problem" for them is they rely on dozens of ad trackers for revenue. In order to implement SSL securely, all resources loaded on a page must also be served via SSL, including third party trackers. News websites claim that because these trackers don't support SSL, neither can they.
 
