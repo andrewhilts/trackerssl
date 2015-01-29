@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tracker SSL",
   "version": "0.0.9",
-  "description": "Monitors and tests known ad trackers for SSL supprt",
+  "description": "Monitors and tests known ad trackers for HTTPS supprt",
   "icons": {
       "16": "img/trackerssl16.png",
       "48": "img/trackerssl48.png",
