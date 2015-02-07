@@ -269,6 +269,17 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       });
     }
   },
+  stageTests: function(sendReport){
+    var that = this;
+
+    chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+      var activeTabId = tabs[0].id;
+      if(activeTabId == that.get('tabid')){
+        // Only run tests for active Tab
+        that.runTests(sendReport);
+      }
+    });
+  },
   runTests: function(sendReport){
     var url = this.get('url');
     var testResults = {
@@ -313,7 +324,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         }
         that.get('url').get('requests').add(url);
         // Asynchronous event
-        that.runTests(false);
+        that.stageTests(false);
       }
     };
     SSLRequest.send();
@@ -433,7 +444,7 @@ var TrackerSSL_RequestController = function(req){
           url.set('supportsSSL', true);
           // check if ruleset redirect 200 OKs?
           tab.get('url').get('requests').add(url);
-          tab.runTests(false);
+          tab.stageTests(false);
         }
         else{
           // Do one last test
@@ -444,7 +455,7 @@ var TrackerSSL_RequestController = function(req){
       console.log(url);
     }
     else{
-      tab.runTests(false);
+      tab.stageTests(false);
     }
   }
     else{
@@ -457,7 +468,7 @@ var TrackerSSL_RequestController = function(req){
 var tabMessageController = function(message, sender, sendResponse) {
   var activeTab = TrackerSSL_CurrentTabCollection.get(message.tab);
   if(activeTab){
-    activeTab.runTests(true);
+    activeTab.stageTests(true);
   }
 }
 
@@ -474,6 +485,6 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 chrome.runtime.onMessage.addListener(tabMessageController);
-
+chrome.tabs.onActivated.addListener(tabMessageController);
 // chrome.tabs.onUpdated.addListener(TrackerSSL_TabController);
 
