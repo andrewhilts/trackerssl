@@ -21,6 +21,12 @@
       "app/https-everywhere/https_e_bg.js",
       "app/twitter-list.js",
       "app/popup.template.js",
+      "app/trackerssl/utilities.js",
+      "app/trackerssl/request.js",
+      "app/trackerssl/tab.js",
+      "app/trackerssl/identifier.js",
+      "app/trackerssl/request-controller.js",
+      "app/trackerssl/tabMessage-controller.js",
       "background.js"
     ]
   },
