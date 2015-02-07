@@ -66,7 +66,7 @@ templates['popup'] = template({"1":function(depth0,helpers,partials,data,depths)
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " for being secure?</p>\n            <div id=\"widget\">\n              <div class=\"btn-o\" data-scribe=\"component:button\">\n                <a href=\"https://twitter.com/intent/tweet?text=Thank%20you%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + "%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readership!%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n              </div>\n            </div>\n";
+    + "%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readers!%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n              </div>\n            </div>\n";
 },"20":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "            Tell "
@@ -80,7 +80,7 @@ templates['popup'] = template({"1":function(depth0,helpers,partials,data,depths)
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " for supporting HTTPS?</p>\n        <div id=\"widget\">\n          <div class=\"btn-o\" data-scribe=\"component:button\">\n            <a href=\"https://twitter.com/intent/tweet?text=Thank%20you%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + "%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readership!%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n          </div>\n        </div>\n";
+    + "%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readers!%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n          </div>\n        </div>\n";
 },"24":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.couldBeSSL : depth0), {"name":"if","hash":{},"fn":this.program(25, data),"inverse":this.program(33, data),"data":data});
@@ -104,21 +104,21 @@ templates['popup'] = template({"1":function(depth0,helpers,partials,data,depths)
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to fix it.</p></p>\n            <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + "%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + "%20Why%20don't%20you%20secure%20your%20readers%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"29":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "            Tell "
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to fix it.</p></p>\n            <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readership.%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readers.%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"31":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "          <p id=\"trackerCount\">No 3rd party trackers on this site.</p>\n          <p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask "
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to adopt SSL by default?</p>\n          <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + "%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + "%20Why%20don't%20you%20secure%20your%20readers%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"33":function(depth0,helpers,partials,data) {
   var stack1, buffer = "        <h1 id=\"leadMessage\">This website is insecure.</h1>\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.uniqueHosts : depth0), {"name":"if","hash":{},"fn":this.program(34, data),"inverse":this.program(39, data),"data":data});
@@ -137,21 +137,21 @@ templates['popup'] = template({"1":function(depth0,helpers,partials,data,depths)
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to fix it.</p>\n            <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20support%20HTTPS.%20Why%20don't%20you%20secure%20your%20readership%20and%20do%20the%20same%3F%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20support%20HTTPS.%20Why%20don't%20you%20secure%20your%20readers%20and%20do%20the%20same%3F%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"37":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "            Tell "
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to fix it.</p>\n            <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readership.%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + ",%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readers.%20%23trackerSSL\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"39":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "          <p id=\"trackerCount\">No 3rd party trackers on this site.</p>\n          <p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask "
     + escapeExpression(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"domain","hash":{},"data":data}) : helper)))
     + " to adopt SSL?</p>\n          <div id=\"widget\">\n            <div class=\"btn-o\" data-scribe=\"component:button\">\n              <a href=\"https://twitter.com/intent/tweet?text=Hey%20"
     + escapeExpression(((helper = (helper = helpers.twitter || (depth0 != null ? depth0.twitter : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"twitter","hash":{},"data":data}) : helper)))
-    + "%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
+    + "%20Why%20don't%20you%20secure%20your%20readers%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl\" target=\"_blank\" class=\"btn\" id=\"b\"><i></i><span class=\"label\" id=\"l\">Tweet</span></a>\n            </div>\n          </div>\n";
 },"41":function(depth0,helpers,partials,data) {
   return "      <div class=\"menu\">\n        <span id=\"identifierBtn\" class=\"\">Identifiers</span> | \n        <span id=\"trackerBtn\" class=\"\">All Trackers</span>\n      </div>\n";
   },"43":function(depth0,helpers,partials,data,depths) {
