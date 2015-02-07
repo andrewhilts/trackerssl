@@ -39,7 +39,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       hostName:             url.get('hostname'),
       twitter:              url.get('twitterHandle'),
       ssl:                  url.isSSL(),
-      couldBeSSL:           url.get('couldBeSSL'),
+      couldBeSSL:           url.get('supportsSSL'),
       uniqueHosts:          url.getUniqueHosts(),
       uniqueHostsTotal:     url.getTotalUniqueHosts(),
       goodURL:              url.getSecureHosts(),
@@ -57,28 +57,6 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     chrome.runtime.sendMessage(message, function(response) {
         console.log(response);
        });
-  },
-  hostnameSSLResolves: function(url){
-    var SSLRequest = new XMLHttpRequest();
-    var destination = "https://" + url.get('hostname');
-    var that = this;
-    var testURL = url;
-    console.log(destination);
-    SSLRequest.open("GET", destination, true);
-    SSLRequest.onreadystatechange = function(){
-      if(SSLRequest.readyState == 4){
-        if (SSLRequest.status == 200) {
-          testURL.set('supportsSSL', true);
-        }
-        else{
-          testURL.set('supportsSSL', false);
-        }
-        that.get('url').get('requests').add(url);
-        // Asynchronous event
-        that.stageTests(false);
-      }
-    };
-    SSLRequest.send();
   },
   updateDisplay: function(testResults, sendReport){
     var message = {};
