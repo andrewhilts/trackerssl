@@ -1,6 +1,6 @@
 var hostnameObj;
 var hostnameObjRequest = new XMLHttpRequest();
-hostnameObjRequest.open("GET", "disconnect.json", true);
+hostnameObjRequest.open("GET", "app/tracker-datasets/disconnect.json", true);
 hostnameObjRequest.onreadystatechange = function(){
   if(hostnameObjRequest.readyState == 4){
     if (hostnameObjRequest.status == 200) {

@@ -1,3 +1,3 @@
 var rule_list = [
-"rules/default.rulesets",
+"app/rules/default.rulesets",
 ];

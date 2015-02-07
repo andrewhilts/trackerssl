@@ -4,9 +4,9 @@
   "version": "0.0.10",
   "description": "Monitors and tests known ad trackers for HTTPS supprt",
   "icons": {
-      "16": "img/trackerssl16.png",
-      "48": "img/trackerssl48.png",
-      "128": "img/trackerssl128.png"
+      "16": "app/img/trackerssl16.png",
+      "48": "app/img/trackerssl48.png",
+      "128": "app/img/trackerssl128.png"
     },
   "background": {
     "scripts": [
@@ -19,24 +19,24 @@
       "app/https-everywhere/rule_list.js", 
       "app/https-everywhere/rules.js", 
       "app/https-everywhere/https_e_bg.js",
-      "app/twitter-list.js",
-      "app/popup.template.js",
+      "app/tracker-datasets/twitter-list.js",
+      "app/popup/popup.template.js",
       "app/trackerssl/utilities.js",
       "app/trackerssl/request.js",
       "app/trackerssl/tab.js",
       "app/trackerssl/identifier.js",
       "app/trackerssl/request-controller.js",
       "app/trackerssl/tabMessage-controller.js",
-      "background.js"
+      "app/background.js"
     ]
   },
   "browser_action": {
     "default_icon": {
-      "19": "img/icon19.png",
-      "38": "img/icon38.png"
+      "19": "app/img/icon19.png",
+      "38": "app/img/icon38.png"
     },
     "default_title": "Tracker SSL",
-    "default_popup": "popup.html"
+    "default_popup": "app/popup/popup.html"
   },
   "permissions": [
     "cookies",
@@ -45,6 +45,6 @@
     "https://*/*"
   ],
   "web_accessible_resources": [
-    "disconnect.json"
+    "app/tracker-datasets/disconnect.json"
   ]
 }

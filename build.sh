@@ -2,7 +2,7 @@
 
 bower install
 # Precompile popup template, requires npm install -g handlebars
-handlebars popup.handlebars -f app/popup.template.js
+handlebars app/popup/popup.handlebars -f app/popup/popup.template.js
 
-python disconnect_parser.py
-python twitter-grabber.py
+python utilities/disconnect_parser.py
+python utilities/twitter-grabber.py

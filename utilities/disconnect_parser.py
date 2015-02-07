@@ -22,5 +22,5 @@ for i in data['categories']:
 					hostnameDict[hostname] = company
 
 print "Saving to file"
-with open('disconnect.json', 'wb') as fp:
+with open('app/tracker-datasets/disconnect.json', 'wb') as fp:
     json.dump(hostnameDict, fp)

@@ -16,7 +16,7 @@ except IndexError:
 	sys.exit()
 
 try:
-	with open('twitterLists/defaultList.json', 'r') as fp:
+	with open('app/tracker-datasets/twitterLists/defaultList.json', 'r') as fp:
 	    json_str = fp.read()
 	    twitter_accounts = json.loads(json_str)
 except IOError:
@@ -52,5 +52,5 @@ for listID in args:
 		twitter_accounts = getHostnameAccount(member, twitter_accounts)
 
 print "Saving to file"
-with open('twitterLists/defaultList.json', 'wb') as fp:
+with open('app/tracker-datasets/twitterLists/defaultList.json', 'wb') as fp:
     json.dump(twitter_accounts, fp)
