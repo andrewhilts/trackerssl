@@ -242,7 +242,7 @@ var TrackerSSL_RequestCollection = Backbone.Collection.extend({
 // Only add unique hostnames to request collection
 TrackerSSL_RequestCollection.prototype.add = function(request){
   var isDupe = this.any(function(_request){
-    return _request.get('domain') === request.get('domain');
+    return _request.get('hostname') === request.get('hostname');
   });
   return isDupe ? false : Backbone.Collection.prototype.add.call(this, request);
 }
@@ -387,6 +387,7 @@ var TrackerSSL_TabCollection = Backbone.Collection.extend({
 var TrackerSSL_RequestController = function(req){
   var tab;
   var url;
+  var hostnameInCollection;
   var has_applicable_ruleset;
   var tabid = req.tabId;
   var type = req.type; 
@@ -432,32 +433,36 @@ var TrackerSSL_RequestController = function(req){
     // check if tabid exists in current records 
     tab = TrackerSSL_CurrentTabCollection.get(tabid);
     if(typeof tab !== "undefined"){
-      url.thirdPartyChecker(
-        tab.get('url').get('domain')
-      );
-      if(url.get('isThirdParty')){
-        // Check for SSL support
-        has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
+      hostnameInCollection = (typeof tab.get('url').get('requests').findWhere({'hostname': url.get('hostname')}) !=="undefined");
+      // Only test if hostname hasn't already been tested
+      if(!hostnameInCollection){
+        url.thirdPartyChecker(
+          tab.get('url').get('domain')
+        );
+        if(url.get('isThirdParty')){
+          // Check for SSL support
+          has_applicable_ruleset = HTTPS_Everwhere_onBeforeRequest(req);
 
-        if(has_applicable_ruleset || url.get('protocol') === "https"){
-          // console.log("HTTPS Everhwhere ruleset found");
-          url.set('supportsSSL', true);
-          // check if ruleset redirect 200 OKs?
-          tab.get('url').get('requests').add(url);
-          tab.stageTests(false);
+          if(has_applicable_ruleset || url.get('protocol') === "https"){
+            // console.log("HTTPS Everhwhere ruleset found");
+            url.set('supportsSSL', true);
+            // check if ruleset redirect 200 OKs?
+            tab.get('url').get('requests').add(url);
+            tab.stageTests(false);
+          }
+          else{
+            // Do one last test
+            tab.hostnameSSLResolves(url);
+          }
+
+          // Analyze cookies
+          console.log(url);
         }
         else{
-          // Do one last test
-          tab.hostnameSSLResolves(url);
+          tab.stageTests(false);
         }
-
-      // Analyze cookies
-      console.log(url);
+      }
     }
-    else{
-      tab.stageTests(false);
-    }
-  }
     else{
       // TODO FIX THIS
       console.log("Request made from tab that was opened before extension initialized");
