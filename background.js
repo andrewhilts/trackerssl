@@ -460,7 +460,7 @@ var TrackerSSL_RequestController = function(req){
   }
     else{
       // TODO FIX THIS
-      throw(new Error("Request made from tab that was opened before extension initialized"));
+      console.log("Request made from tab that was opened before extension initialized");
     }
   }
 }
