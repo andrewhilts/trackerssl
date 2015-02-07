@@ -1,176 +1,120 @@
-var container = document.getElementById('container');
-var report = document.getElementById('report');
+var containerEl = document.getElementById('container');
+var reportEl = document.getElementById('report');
 window.identifiersClass = "active";
 window.trackersClass = "";
 window.activeIndex = 0;
 
- var iframe = document.createElement('iframe');
- iframe.setAttribute("id", "sandbox");
- iframe.setAttribute("height", "0");
- iframe.setAttribute("width", "0");
- iframe.style.display = "none";
- iframe.setAttribute("src", "templater.html");
-
-iframe.onload = function(){
-var message = {
- command: 'render',
- context: ""
-};
-iframe.contentWindow.postMessage(message, '*');
-}
-container.appendChild(iframe);
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+var requestReport = function(tabid){
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-    var e;
-    if(message.tab == tabs[0].id){
-      if(message.identifiers.length === 0){
-        window.identifiersClass = "";
-        window.trackersClass = "active";
-      }
-      message.identifiersBtnClass = window.identifiersClass;
-      message.trackersBtnClass = window.trackersClass;
-      message.identifiersClass = window.identifiersClass;
-      message.trackersClass = window.trackersClass;
-      message.activeIndex = window.activeIndex;
-      populateTrackerLists(message, window.visibleEL);
-     }
-});
-});
-// var curIndex = 0;
-window.addEventListener('message', function(event) {
-  if (event.data.html) {
-    console.log(event);
-    // var listy = document.getElementById("badHosts");
-    // if(listy && listy.children.length > 0){
-    //   for(i in listy){
-    //     if(hasClass(listy[i], "active")){
-    //       curIndex = i;
-    //     }
-    //   }
-    // }
-    el = document.createElement( 'div' );
-    el.innerHTML = event.data.html;
-    if(el.querySelector("#badHosts")){
-      el.querySelector("#badHosts").children[window.activeIndex].className = "active";
-    }
-    if(el.querySelector("#thirdPartyHosts")){
-      el.querySelector("#thirdPartyHosts").children[window.activeIndex].className = "active";
-    }
-    report.innerHTML = el.innerHTML;
-    window.setTimeout(function(){
+    var tabid = tabs[0].id;
+    chrome.runtime.sendMessage({
+      tab: tabid,
+      message: "getReport"
+    }, function(response) {
+      console.log(response);
+    });
+  });
+}
+
+var displayReport = function(report, data){
+  var el;
+
+
+  el = document.createElement( 'div' );
+  el.innerHTML = report;
+
+  el = updateReportClasses(el, data);
+  reportEl.innerHTML = el.innerHTML;
+
+  window.setTimeout(function(){
     initMenu();
-      window.clearTimeout(window.timer);
-
-      //   list.onmouseout = function(){
-      //     window.clearTimeout(window.timer);
-      //     window.timer = window.setTimeout(function(){
-      //       highlightIdentifiers(list);
-      //     }, 1000);
-      //   }
-      document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + "px";
-      window.setTimeout(function(){
-      document.getElementsByTagName('body')[0].style.minHeight = report.offsetHeight + 1 + "px";
-      }, 10);
+    document.getElementsByTagName('body')[0].style.minHeight = reportEl.offsetHeight + "px";
+    window.setTimeout(function(){
+      document.getElementsByTagName('body')[0].style.minHeight = reportEl.offsetHeight + 1 + "px";
     }, 10);
-  }
-});
-
-var initMenu = function(){
-  var trackerEl = document.getElementById('trackers');
-  var identifierEl = document.getElementById('identifiers');
-  var trackerBtnEl = document.getElementById('trackerBtn');
-  var identifierBtnEl = document.getElementById('identifierBtn');
-  var list = document.getElementById("badHosts");
-  var list2 = document.getElementById("thirdPartyHosts");
-
-  if(trackerBtnEl){
-  trackerBtnEl.onclick = function(){
-      addClass(trackerBtnEl, "active");
-      removeClass(identifierBtnEl, "active");
-      addClass(trackerEl, "active");
-      removeClass(identifierEl, "active");
-      window.identifiersClass = "";
-      window.trackersClass = "active";
-  }
-}
-if(identifierBtnEl){
-  identifierBtnEl.onclick = function(){
-      addClass(identifierBtnEl, "active");
-      removeClass(trackerBtnEl, "active");
-      addClass(identifierEl, "active");
-      removeClass(trackerEl, "active");
-      window.identifiersClass = "active";
-      window.trackersClass = "";
-  }
+  }, 10);
 }
 
-    // window.timer = window.setTimeout(function(){
-    //   highlightIdentifiers(list);
-    // }, 1000);
-if(list){
-    for(i in list.children){
-      setMouseOver(list.children[i]);
+var updateReportClasses = function(el, data){
+  if(el.querySelector("#badHosts")){
+    el.querySelector("#badHosts").children[window.activeIndex].className = "active";
+  }
+  if(el.querySelector("#thirdPartyHosts")){
+    el.querySelector("#thirdPartyHosts").children[window.activeIndex].className = "active";
+  }
+  if(data.identifiers.length === 0){
+    window.identifiersClass = "";
+    window.trackersClass = "active";
+  }
+  if(el.querySelector("#trackers")){
+    el.querySelector("#trackers").className = window.trackersClass;
+  }
+  if(el.querySelector("#trackerBtn")){
+    el.querySelector("#trackerBtn").className = window.trackersClass;
+  }
+  if(el.querySelector("#identifiers")){
+    el.querySelector("#identifiers").className = window.identifiersClass;
+  }
+  if(el.querySelector("#identifierBtn")){
+    el.querySelector("#identifierBtn").className = window.identifiersClass;
+  }
+
+  return el;
+}
+
+var initMenu = function() {
+    var trackerEl = document.getElementById('trackers');
+    var identifierEl = document.getElementById('identifiers');
+    var trackerBtnEl = document.getElementById('trackerBtn');
+    var identifierBtnEl = document.getElementById('identifierBtn');
+    var list = document.getElementById("badHosts");
+    var list2 = document.getElementById("thirdPartyHosts");
+
+    if (trackerBtnEl) {
+        trackerBtnEl.onclick = function() {
+            addClass(trackerBtnEl, "active");
+            removeClass(identifierBtnEl, "active");
+            addClass(trackerEl, "active");
+            removeClass(identifierEl, "active");
+            window.identifiersClass = "";
+            window.trackersClass = "active";
+        }
     }
-  }
-  if(list2){
-    for(i in list2.children){
-      setMouseOver(list2.children[i]);
+    if (identifierBtnEl) {
+        identifierBtnEl.onclick = function() {
+            addClass(identifierBtnEl, "active");
+            removeClass(trackerBtnEl, "active");
+            addClass(identifierEl, "active");
+            removeClass(trackerEl, "active");
+            window.identifiersClass = "active";
+            window.trackersClass = "";
+        }
+    }
+
+    if (list) {
+        for (i in list.children) {
+            setMouseOver(list.children[i]);
+        }
+    }
+    if (list2) {
+        for (i in list2.children) {
+            setMouseOver(list2.children[i]);
+        }
     }
 }
-}
 
-var setMouseOver = function(e){
-  e.onmouseover = function(){
-    window.clearTimeout(window.timer);
-    for(j in this.parentNode.children){
-      if(this.parentNode.children[j] === this){
-        addClass(this, "active");
-        window.activeIndex = j;
-      }
-      else{
-        removeClass(this.parentNode.children[j], 'active');
-      }
+var setMouseOver = function(e) {
+    e.onmouseover = function() {
+        window.clearTimeout(window.timer);
+        for (j in this.parentNode.children) {
+            if (this.parentNode.children[j] === this) {
+                addClass(this, "active");
+                window.activeIndex = j;
+            } else {
+                removeClass(this.parentNode.children[j], 'active');
+            }
+        }
     }
-  }
-}
-
-chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-var tabid = tabs[0].id;
-chrome.runtime.sendMessage({
-  tab: tabid,
-  message: "getTrackers"
-}, function(response) {
-});
-});
-
-highlightIdentifiers = function(e){
-  var oldIndex, newIndex;
-  for(var i = 0; i < e.children.length; i++){
-    if(hasClass(e.children[i], "active")){
-      oldIndex = i;
-    }
-  }
-  if(oldIndex === e.children.length-1){
-    newIndex = 0;
-  }
-  else {
-    newIndex = oldIndex+1;
-  }
-  removeClass(e.children[oldIndex], "active");
-  addClass(e.children[newIndex], "active");
-  window.timer = window.setTimeout(function(){
-    // window.clearTimeout(window.timer);
-    highlightIdentifiers(e);
-  }, 1000);
-}
-
-var populateTrackerLists = function(tabData){
-  var message = {
-   command: 'render',
-   context: tabData
-  };
-  iframe.contentWindow.postMessage(message, '*');
 }
 
 function hasClass(ele,cls) {
@@ -187,3 +131,18 @@ function removeClass(ele,cls) {
     ele.className=ele.className.replace(reg,' ');
   }
 }
+
+requestReport();
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+    if(message.data.tab == tabs[0].id){
+      if(typeof message.report == "undefined"){
+        requestReport(tabs[0].id)
+      }
+      else{
+        displayReport(message.report, message.data);
+      }
+    }
+  });
+});

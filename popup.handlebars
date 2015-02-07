@@ -1,0 +1,255 @@
+{{#if tab}}
+  {{#if ssl}}
+      {{#if brokenSSL}}
+        <div class="bad">
+      {{else}}
+        <div class="good">
+      {{/if}}
+  {{else}}
+    <div class="bad">
+  {{/if}}
+
+    {{#if ssl}}
+      {{#if brokenSSL}}
+        <h1 id="leadMessage">Website has a security hole.</h1>
+      {{else}}
+        <h1 id="leadMessage">This website is secured</h1>
+      {{/if}}
+      {{#if uniqueHosts}}
+        {{#if brokenSSL}}
+          <p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be helping protect you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.</p><p>
+            But, even though {{domain}} uses HTTPS, there's at least one third party that's been communicating insecurely. </p>
+            <p>Tell {{domain}} to fix it.</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thanks%20{{twitter}}%20for%20supporting%20HTTPS%2C%20but%20since%20some%20of%20your%20site%27s%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
+            </div>
+        {{else}}
+          <p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site are helping protect you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.
+          {{#if completeTrackersSSL}}
+            Why not thank {{domain}} for being secure?</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{twitter}}%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readership!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
+            </div>
+          {{else}}
+            Tell {{domain}} to fix it.</p>
+            <div id="widget">
+              <div class="btn-o" data-scribe="component:button">
+                <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{twitter}}%20for%20supporting%20HTTPS%20on%20your%20site%2C%20but%20since%20some%20of%20your%20trackers%20don%27t%2C%20it%20breaks%20your%20security!%20Might%20wanna%20fix%20that.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+              </div>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{else}}
+        <p id="trackerCount">No 3rd party trackers on this site. Why don&lsquo;t you thank {{domain}} for supporting HTTPS?</p>
+        <div id="widget">
+          <div class="btn-o" data-scribe="component:button">
+            <a href="https://twitter.com/intent/tweet?text=Thank%20you%20{{twitter}}%20for%20supporting%20HTTPS%20on%20your%20site%20and%20securing%20your%20readership!%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+          </div>
+        </div>
+      {{/if}}
+    {{else}}
+      {{#if couldBeSSL}}
+        <h1 id="leadMessage">Website is insecure by default</h1>
+        {{#if uniqueHosts}}
+          <p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be protecting you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.
+          {{#if majorityTrackersSSL}}
+            Tell {{domain}} to fix it.</p></p>
+            <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}}%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+          {{else}}
+            Tell {{domain}} to fix it.</p></p>
+            <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}},%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readership.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+          {{/if}}
+        {{else}}
+          <p id="trackerCount">No 3rd party trackers on this site.</p>
+          <p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask {{domain}} to adopt SSL by default?</p>
+          <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}}%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+        {{/if}}
+      {{else}}
+        <h1 id="leadMessage">This website is insecure.</h1>
+      {{#if uniqueHosts}}
+          <p id="trackerCount"><strong>{{percentageSSL}}%</strong> of the trackers on this site could be protecting you from <a href="https://www.eff.org/deeplinks/2013/12/nsa-turns-cookies-and-more-surveillance-beacons" target="_blank">NSA snooping</a>.
+          {{#if majorityTrackersSSL}}
+            Tell {{domain}} to fix it.</p>
+            <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}},%20most%20of%20your%20site%27s%20ad%20trackers%20support%20HTTPS.%20Why%20don't%20you%20secure%20your%20readership%20and%20do%20the%20same%3F%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+          {{else}}
+            Tell {{domain}} to fix it.</p>
+            <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}},%20most%20of%20your%20site%27s%20ad%20trackers%20don't%20support%20HTTPS.%20Consider%20some%20that%20do!%20Secure%20your%20readership.%20%23trackerSSL" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+          {{/if}}
+        {{else}}
+          <p id="trackerCount">No 3rd party trackers on this site.</p>
+          <p>Since there are no third party dependencies preventing it, why don&lsquo;t you ask {{domain}} to adopt SSL?</p>
+          <div id="widget">
+            <div class="btn-o" data-scribe="component:button">
+              <a href="https://twitter.com/intent/tweet?text=Hey%20{{twitter}}%20Why%20don't%20you%20secure%20your%20readership%20and%20enable%20HTTPS%20by%20default%20on%20your%20site%3F%20%23trackerssl" target="_blank" class="btn" id="b"><i></i><span class="label" id="l">Tweet</span></a>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+    {{#if identifiers}}
+      <div class="menu">
+        <span id="identifierBtn" class="">Identifiers</span> | 
+        <span id="trackerBtn" class="">All Trackers</span>
+      </div>
+    {{/if}}
+
+    {{#if identifiers}}
+      <div id="identifiers" class="">
+      {{#if ssl}}
+        {{#if brokenSSL}}
+        <h2><i class="fa fa-user"></i> Insecure Identifiers</h2>
+        <p>Unique IDs about your web browsing habits have been <strong>insecurely sent</strong> to third parties.</p>
+        {{else}}
+        <h2><i class="fa fa-user"></i> Secure Identifiers</h2>
+        <p>Unique IDs about your web browsing habits have been <strong>securely sent</strong> to third parties.</p>
+        {{/if}}
+        
+        <div class="hostsContainer">
+        <ul id="badHosts">
+        {{#each identifiers}}
+            <li>
+            {{#if ../brokenSSL}}
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              {{#if supportsSSL}}
+                <i class="fa fa-unlock"></i>
+              {{else}}
+                <i class="fa fa-ban"></i>
+              {{/if}}
+              <span>{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+            {{else}}
+            {{#if supportsSSL}}
+                <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+                <i class="fa fa-lock"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              {{else}}
+                <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+                <i class="fa fa-ban"></i> <span title="{{hostname}}">{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+              {{/if}}
+            {{/if}}
+            </li>
+        {{/each}}
+
+        </ul>
+        </div>
+      {{else}}
+        <h2><i class="fa fa-user"></i> Insecure Identifiers</h2>
+        <p>Unique IDs about your web browsing habits have been <strong>insecurely sent</strong> to third parties.</p>
+        <div class="hostsContainer">
+        <ul id="badHosts">
+        {{#each identifiers}}
+            <li>
+              <span class="unique_key"><i class="fa fa-search"></i> {{this.unique_key}}</span>
+              {{#if supportsSSL}}
+                <i class="fa fa-unlock"></i>
+              {{else}}
+                <i class="fa fa-ban"></i>
+              {{/if}}
+              <span>{{this.label}}</span> <span class="identifier">{{this.key_name}}</span>
+            </li>
+        {{/each}}
+        </ul>
+        </div>
+      {{/if}}
+              <p class="small"><strong>Legend</strong></p>
+        {{#if ssl}}
+          {{#if brokenSSL}}
+            <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+          {{else}}
+          <p class="small"><i class="fa fa-lock"></i> Tracking IDs <strong>are</strong> sent with some safety measures.</p>
+          <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+          {{/if}}
+        {{else}}
+          <p class="small"><i class="fa fa-unlock"></i> Tracking IDs <strong>could</strong> be sent safely if this site was secure.</p>
+          <p class="small"><i class="fa fa-ban"></i> Tracking IDs <strong>do not</strong> support secure transmission.</p>
+        {{/if}}
+      </div>
+    {{/if}}
+    {{#if uniqueHosts}}
+        <div id="trackers" class="">
+        <h2><i class="fa fa-cloud-upload"></i> All trackers</h2>
+        <p>At least {{uniqueHostsTotal}} third parties know you are on this webpage.</p>
+        <div class="hostsContainer">
+        <ul id="thirdPartyHosts">
+        {{#if ssl}}
+          {{#each requests}}
+              <li>
+                <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
+                {{#if ../brokenSSL}}
+                  {{#if supportsSSL}}
+                  <i class="fa fa-unlock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                {{else}}
+                  {{#if supportsSSL}}
+                  <i class="fa fa-lock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                {{/if}}
+                
+                <span>{{this.label}}</span>
+              </li>
+          {{/each}}
+        {{else}}
+          {{#each requests}}
+              <li>
+                <span class="unique_key"><i class="fa fa-globe"></i> {{this.hostname}}</span>
+                {{#if supportsSSL}}
+                  <i class="fa fa-unlock"></i>
+                {{else}}
+                  <i class="fa fa-ban"></i>
+                {{/if}}
+                <span>{{this.label}}</span>
+              </li>
+          {{/each}}
+        {{/if}}
+        </ul>
+                <p class="small"><strong>Legend</strong></p>
+        {{#if ssl}}
+          {{#if brokenSSL}}
+            <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+          {{else}}
+            <p class="small"><i class="fa fa-lock"></i> Tracker <strong>is</strong> tracking with some safety measures.</p>
+            <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+          {{/if}}
+        {{else}}
+        <p class="small"><i class="fa fa-unlock"></i> Tracker <strong>could</strong> be tracking safely if this site was secure.</p>
+        <p class="small"><i class="fa fa-ban"></i> Tracker <strong>does not</strong> support secure transmission.</p>
+        {{/if}}
+        </div>
+      {{/if}}
+      </div>
+{{else}}
+<div class="bad">  
+  <h1>Error</h1>
+  <p>Page loaded before extension initialized.</p>
+  <p>Please <strong>Refresh the page</strong> to see the report!</p>
+  <p>If error persists, the page is probably not a normal web page loaded through HTTP or HTTPS.</p>
+</div>
+{{/if}}

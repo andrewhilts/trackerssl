@@ -269,7 +269,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       });
     }
   },
-  runTests: function(){
+  runTests: function(sendReport){
     var url = this.get('url');
     var testResults = {
       tab:                  this.get('tabid'),
@@ -289,7 +289,7 @@ var TrackerSSL_Tab = Backbone.Model.extend({
       completeTrackersSSL:  url.isCompleteTrackersSSL(),
       requests:             url.get('requests').toJSON()
     }
-    this.updateDisplay(testResults);
+    this.updateDisplay(testResults, sendReport);
   },
   sendMessageToPopup: function(message){
     chrome.runtime.sendMessage(message, function(response) {
@@ -313,14 +313,22 @@ var TrackerSSL_Tab = Backbone.Model.extend({
         }
         that.get('url').get('requests').add(url);
         // Asynchronous event
-        that.runTests();
+        that.runTests(false);
       }
     };
     SSLRequest.send();
   },
-  updateDisplay: function(message){
+  updateDisplay: function(testResults, sendReport){
+    var message = {};
+    
+    // Check for send report flag so we don't needlessly compile templates on inactive tabs or closed popovers
+    if(sendReport){
+      console.log("!! Sending Report");
+      message.report = Handlebars.templates.popup(testResults);
+    }
+    message.data = testResults;
     color = this.determineColor();
-    this.updateIconCounter(message.percentageSSL +  "%", color);
+    this.updateIconCounter(message.data.percentageSSL +  "%", color);
     this.sendMessageToPopup(message);
   },
   determineColor: function(){
@@ -425,7 +433,7 @@ var TrackerSSL_RequestController = function(req){
           url.set('supportsSSL', true);
           // check if ruleset redirect 200 OKs?
           tab.get('url').get('requests').add(url);
-          tab.runTests();
+          tab.runTests(false);
         }
         else{
           // Do one last test
@@ -436,7 +444,7 @@ var TrackerSSL_RequestController = function(req){
       console.log(url);
     }
     else{
-      tab.runTests();
+      tab.runTests(false);
     }
   }
     else{
@@ -449,7 +457,7 @@ var TrackerSSL_RequestController = function(req){
 var tabMessageController = function(message, sender, sendResponse) {
   var activeTab = TrackerSSL_CurrentTabCollection.get(message.tab);
   if(activeTab){
-    activeTab.runTests();
+    activeTab.runTests(true);
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tracker SSL",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Monitors and tests known ad trackers for HTTPS supprt",
   "icons": {
       "16": "img/trackerssl16.png",
@@ -10,6 +10,7 @@
     },
   "background": {
     "scripts": [
+      "app/bower_components/handlebars/handlebars.runtime.min.js", 
       "app/bower_components/underscore/underscore-min.js", 
       "app/bower_components/backbone/backbone.js",
       "app/bower_components/URIjs/src/URI.min.js",
@@ -19,11 +20,9 @@
       "app/https-everywhere/rules.js", 
       "app/https-everywhere/https_e_bg.js",
       "app/twitter-list.js",
+      "app/popup.template.js",
       "background.js"
     ]
-  },
-  "sandbox": {
-    "pages": ["templater.html"]
   },
   "browser_action": {
     "default_icon": {
@@ -36,7 +35,6 @@
   "permissions": [
     "cookies",
     "webRequest",
-    "webRequestBlocking", 
     "http://*/*",
     "https://*/*"
   ],
