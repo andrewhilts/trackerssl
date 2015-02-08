@@ -29,4 +29,4 @@ twitterList = {
 
 disconnectTrackerDomainRequest.send();
 
-twitterHostnames = TwitterList.getList();
+twitterHostnames = twitterList.getList();

@@ -19,7 +19,7 @@
       "app/https-everywhere/rule_list.js", 
       "app/https-everywhere/rules.js", 
       "app/https-everywhere/https_e_bg.js",
-      "app/tracker-datasets/twitter-list.js",
+      "app/trackerssl/tracker-metadata.js",
       "app/popup/popup.template.js",
       "app/trackerssl/utilities.js",
       "app/trackerssl/request.js",
