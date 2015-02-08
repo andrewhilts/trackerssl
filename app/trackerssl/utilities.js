@@ -1,14 +1,14 @@
-var hostnameObj;
-var hostnameObjRequest = new XMLHttpRequest();
-hostnameObjRequest.open("GET", "app/tracker-datasets/disconnect.json", true);
-hostnameObjRequest.onreadystatechange = function(){
-  if(hostnameObjRequest.readyState == 4){
-    if (hostnameObjRequest.status == 200) {
-      hostnameObj = JSON.parse(hostnameObjRequest.responseText);
+var disconnectTrackerDomains;
+var disconnectTrackerDomainRequest = new XMLHttpRequest();
+disconnectTrackerDomainRequest.open("GET", "app/tracker-datasets/disconnect.json", true);
+disconnectTrackerDomainRequest.onreadystatechange = function(){
+  if(disconnectTrackerDomainRequest.readyState == 4){
+    if (disconnectTrackerDomainRequest.status == 200) {
+      disconnectTrackerDomains = JSON.parse(disconnectTrackerDomainRequest.responseText);
     }
   }
 };
-hostnameObjRequest.send();
+disconnectTrackerDomainRequest.send();
 
 var twitterHostnames = TwitterList.getList();
 

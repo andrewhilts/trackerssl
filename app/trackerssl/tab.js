@@ -32,24 +32,25 @@ var TrackerSSL_Tab = Backbone.Model.extend({
     });
   },
   runTests: function(sendReport){
-    var url = this.get('url');
+    var currentPage = this.get('url');
+    var pageThirdParties = currentPage.get('requests');
     var testResults = {
       tab:                  this.get('tabid'),
-      domain:               url.get('domain'),
-      hostName:             url.get('hostname'),
-      twitter:              url.get('twitterHandle'),
-      ssl:                  url.isSSL(),
-      couldBeSSL:           url.get('supportsSSL'),
-      uniqueHosts:          url.getUniqueHosts(),
-      uniqueHostsTotal:     url.getTotalUniqueHosts(),
-      goodURL:              url.getSecureHosts(),
-      badURL:               url.getInsecureHosts(),
-      brokenSSL:            url.hasBrokenHTTPS(),
-      identifiers:          url.getIdentifiers(),
-      percentageSSL:        url.getPercentageSSL(),
-      majorityTrackersSSL:  url.isMajorityTrackersSSL(),
-      completeTrackersSSL:  url.isCompleteTrackersSSL(),
-      requests:             url.get('requests').toJSON()
+      domain:               currentPage.get('domain'),
+      hostName:             currentPage.get('hostname'),
+      twitter:              currentPage.get('twitterHandle'),
+      ssl:                  currentPage.isSSL(),
+      couldBeSSL:           currentPage.get('supportsSSL'),
+      brokenSSL:            currentPage.hasBrokenHTTPS(),
+      uniqueHosts:          pageThirdParties.getUniqueHosts(),
+      uniqueHostsTotal:     pageThirdParties.getTotalUniqueHosts(),
+      goodURL:              pageThirdParties.getSecureHosts(),
+      badURL:               pageThirdParties.getInsecureHosts(),
+      identifiers:          pageThirdParties.getIdentifiers(),
+      percentageSSL:        pageThirdParties.getPercentageSSL(),
+      majorityTrackersSSL:  pageThirdParties.isMajorityTrackersSSL(),
+      completeTrackersSSL:  pageThirdParties.isCompleteTrackersSSL(),
+      requests:             pageThirdParties.toJSON()
     }
     this.updateDisplay(testResults, sendReport);
   },

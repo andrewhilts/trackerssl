@@ -9,21 +9,13 @@ var TrackerSSL_Request = Backbone.Model.extend({
 
     this.set('requests', new TrackerSSL_RequestCollection());
     this.on("change:cookies", this.cookieTest);
-    // this.get('requests').on('change:cookies', function(request, cookies){
-    //   // that.yolo(request, cookies);
-    // });
   },
   thirdPartyChecker: function(firstPartyDomain){
-    if(this.get('domain') !== firstPartyDomain){
-      this.set('isThirdParty', true);
-    }
-    else{
-      this.set('isThirdParty', false);
-    }
+      this.set('isThirdParty', (this.get('domain') !== firstPartyDomain));
   },
   setLabel: function(){
-    if(hostnameObj && hostnameObj[this.get('domain')]){
-      this.set('label', hostnameObj[this.get('domain')]);
+    if(disconnectTrackerDomains && disconnectTrackerDomains[this.get('domain')]){
+      this.set('label', disconnectTrackerDomains[this.get('domain')]);
     }
     else{
       this.set('label', this.get('hostname'));
@@ -69,53 +61,6 @@ var TrackerSSL_Request = Backbone.Model.extend({
   isSSL: function(){
     return (this.get('protocol') === "https");
   },
-  getUniqueHosts: function(){
-    var requests = this.get('requests'),
-    uniqueHosts;
-
-    if(requests){
-      uniqueHosts = _.uniq(requests.pluck('hostname'));
-      this.set('uniqueHosts', uniqueHosts);
-      console.log(uniqueHosts.length, requests.length);
-      return this.get('uniqueHosts');
-    }
-    else{
-      throw(new Error("No requests made from this URL"));
-    }
-  },
-  getTotalUniqueHosts: function(){
-    var uniqueHosts = this.get('requests');
-    if(uniqueHosts){
-      return uniqueHosts.length;
-    }
-    else{
-      throw(new Error("No unique hosts set"));
-    }
-  },
-  getSecureHosts: function(){
-    var requests = this.get('requests');
-    if(requests){
-      var urls_supporting_https = requests.where({'supportsSSL': true});
-      secureHosts = _.uniq(new TrackerSSL_RequestCollection(urls_supporting_https).pluck('hostname'));
-      this.set('secureHosts', secureHosts);
-      return this.get('secureHosts');
-    }
-    else{
-      throw(new Error("No requests made from this URL"));
-    }
-  },
-  getInsecureHosts: function(){
-    var requests = this.get('requests');
-    if(requests){
-      var urls_not_supporting_https = requests.where({'supportsSSL': false});
-      inSecureHosts = _.uniq(new TrackerSSL_RequestCollection(urls_not_supporting_https).pluck('hostname'));
-      this.set('inSecureHosts', inSecureHosts);
-      return this.get('inSecureHosts');
-    }
-    else{
-      throw(new Error("No requests made from this URL"));
-    }
-  },
   hasBrokenHTTPS: function(){
     var requests = this.get('requests');
     if(requests && this.isSSL()){
@@ -131,51 +76,6 @@ var TrackerSSL_Request = Backbone.Model.extend({
     }
     else{
       this.set('hasBrokenHTTPS', false);
-      return false;
-    }
-  },
-  getIdentifiers: function(){
-    var requests = this.get('requests');
-    if(requests){
-      var identifiers = requests.where({'isIdentifier': true});
-      var identCollection = new TrackerSSL_IdentifierCollection();
-      for(i in identifiers){
-        identifier = identifiers[i].get('identifier');
-        identifier.set('supportsSSL', identifiers[i].get('supportsSSL'));
-        identCollection.add(identifier);
-      }
-      identifiers = identCollection.toJSON();
-      this.set('identifiers', identifiers);
-      return this.get('identifiers');
-    }
-    else{
-      throw(new Error("No requests made from this URL"));
-    }
-  },
-  getPercentageSSL: function(){
-    var totalUniqueHosts = this.getTotalUniqueHosts();
-    var secureHosts = this.get('secureHosts');
-
-    if(totalUniqueHosts && secureHosts){
-      return Math.floor(secureHosts.length / totalUniqueHosts * 100);
-    }
-    else{
-      return 100;
-    }
-  },
-  isMajorityTrackersSSL: function(){
-    if(this.getPercentageSSL() > 50){
-      return true;
-    }
-    else{
-      return false;
-    }
-  },
-  isCompleteTrackersSSL: function(){
-    if(this.getPercentageSSL() == 100){
-      return true;
-    }
-    else{
       return false;
     }
   },
@@ -209,6 +109,70 @@ var TrackerSSL_RequestCollection = Backbone.Collection.extend({
       model: TrackerSSL_Request,
       comparator: function( collection ){
         return( !collection.get( 'supportsSSL' ) );
+      },
+      getUniqueHosts: function(){
+        var requests = this,
+        uniqueHosts;
+
+        if(requests){
+          return  _.uniq(requests.pluck('hostname'));
+        }
+        else{
+          throw(new Error("No requests made from this URL"));
+        }
+      },
+      getTotalUniqueHosts: function(){
+        return this.length;
+      },
+      getHostsBySecurity: function(supportsSSL){
+        var requests = this;
+        if(requests){
+          var urls = requests.where({'supportsSSL': supportsSSL});
+          hosts = _.uniq(new TrackerSSL_RequestCollection(urls).pluck('hostname'));
+          return hosts;
+        }
+        else{
+          throw(new Error("No requests made from this URL"));
+        }
+      },
+      getSecureHosts: function(){
+        return this.getHostsBySecurity(true);
+      },
+      getInsecureHosts: function(){
+        return this.getHostsBySecurity(false);
+      },
+      getIdentifiers: function(){
+        var requests = this;
+        if(requests){
+          var identifiers = requests.where({'isIdentifier': true});
+          var identCollection = new TrackerSSL_IdentifierCollection();
+          for(i in identifiers){
+            identifier = identifiers[i].get('identifier');
+            identifier.set('supportsSSL', identifiers[i].get('supportsSSL'));
+            identCollection.add(identifier);
+          }
+          return identCollection.toJSON();
+        }
+        else{
+          throw(new Error("No requests made from this URL"));
+        }
+      },
+      getPercentageSSL: function(){
+        var totalUniqueHosts = this.getTotalUniqueHosts();
+        var secureHosts = this.getSecureHosts();
+
+        if(totalUniqueHosts && secureHosts){
+          return Math.floor(secureHosts.length / totalUniqueHosts * 100);
+        }
+        else{
+          return 100;
+        }
+      },
+      isMajorityTrackersSSL: function(){
+          return (this.getPercentageSSL() > 50);
+      },
+      isCompleteTrackersSSL: function(){
+        return (this.getPercentageSSL() == 100);
       }
 });
 // Only add unique hostnames to request collection

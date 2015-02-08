@@ -75,7 +75,6 @@ var TrackerSSL_RequestController = function(req){
        tab.set('url', url);
     }
     else{
-      console.log("yay")
       tab.get('url').get('requests').add(url);
     }
     tab.stageTests(false);
@@ -94,7 +93,6 @@ var TrackerSSL_RequestController = function(req){
   
   if(shouldBeTested(type)){
     testUrlForSSLSupport(function(){
-      console.log("callback")
       assignUrlToCollection(url, type, tab);
     });
   }
