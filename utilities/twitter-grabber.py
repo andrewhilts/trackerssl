@@ -3,7 +3,7 @@ import json
 import twitter
 import urllib2
 from urlparse import urlparse
-import twitterCredentials
+import twittercredentials
 
 args = sys.argv
 
@@ -22,10 +22,10 @@ try:
 except IOError:
 	twitter_accounts = {}
 
-api = twitter.Api(consumer_key=twitterCredentials.consumer_key,
-                          consumer_secret=twitterCredentials.consumer_secret,
-                          access_token_key=twitterCredentials.access_token_key,
-                          access_token_secret=twitterCredentials.access_token_secret,
+api = twitter.Api(consumer_key=twittercredentials.consumer_key,
+                          consumer_secret=twittercredentials.consumer_secret,
+                          access_token_key=twittercredentials.access_token_key,
+                          access_token_secret=twittercredentials.access_token_secret,
                           cache=None)
 
 def getHostnameAccount(user, hostnameDict):
@@ -54,3 +54,4 @@ for listID in args:
 print "Saving to file"
 with open('app/tracker-datasets/twitterLists/defaultList.json', 'wb') as fp:
     json.dump(twitter_accounts, fp)
+
