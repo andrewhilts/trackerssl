@@ -10,7 +10,7 @@ Check out [TrackerSSL highlights insecure websites and their ad trackers](https:
 You should be familiar with command line, JavaScript, and the [Handlebars](http://handlebarsjs.com/) templating system.
 
 ### System Requirements
-1. Install [node.js](http://nodejs.org/)
+1. Install [node.js](http://nodejs.org/) & npm
 2. Install [bower](http://bower.io)
 
 ### Installation
