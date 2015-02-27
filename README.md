@@ -6,7 +6,7 @@ This Chrome extension monitors a web page, and lets you know how many of a page'
 [Download TrackerSSL from the Google Chrome Store](https://chrome.google.com/webstore/detail/tracker-ssl/hgoabgkpjcbliklekfgepfdlmcnkjnao) (Works best if you uninstall other ad blocking extensions and then re-install them afterwards, so TrackerSSL can do its magic first.)
 
 ##About
-Check out [TrackerSSL highlights insecure websites and their ad trackers](https://citizenlab.org/2015/01/trackerssl/)
+Check out our [project page](https://openeffect.ca/trackerssl/) and [technical report](https://citizenlab.org/2015/01/trackerssl/)
 
 ##Developer guide
 You should be familiar with command line, JavaScript, and the [Handlebars](http://handlebarsjs.com/) templating system.
