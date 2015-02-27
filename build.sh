@@ -5,7 +5,7 @@ bower install
 handlebars app/popup/popup.handlebars -f app/popup/popup.template.js
 
 python utilities/disconnect_parser.py
-python utilities/twitter-grabber.py
+#python utilities/twitter-grabber.py
 
 echo "HTTPS Everywhere Ruleset Grabber"
 echo "Creating tmp directory."

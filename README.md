@@ -7,6 +7,14 @@ This Chrome extension monitors a web page, and lets you know how many of a page'
 Check out [TrackerSSL highlights insecure websites and their ad trackers](https://citizenlab.org/2015/01/trackerssl/)
 
 ##Developer install
-Download this repository, unzip it, navigate to the unzipped folder in Terminal, and run "bower install". You will need to have [bower](http://bower.io) on your machine to do so.
+You should be familiar with command line, JavaScript, and the [Handlebars](http://handlebarsjs.com/) templating system.
+
+### System Requirements
+1. Install [node.js](http://nodejs.org/)
+2. Install [bower](http://bower.io)
+
+Download this repository, unzip it, navigate to the unzipped folder in Terminal, and run `bash build.sh`. This build script will run "bower install", to download and install all 3rd party JavaScript libraries used by the app. Another notable task it does is compile the Handlebars template for the extension's popup area. 
+
+**Important**: Each time you edit app/popup/popup.handlebars you should run either `bash build.sh` or (from the project root directory) `handlebars app/popup/popup.handlebars -f app/popup/popup.template.js`
 
 Then, in Google Chrome, navigate to [chrome://extensions](chrome://extensions), make sure "Developer Mode" is checked off, and then click "Load unpacked extension". Then select the folder you just unzipped, which should be called **trackerssl**. Make sure the extension is enabled, and you should be good to go!
