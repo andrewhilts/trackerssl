@@ -12,7 +12,7 @@ Check out [TrackerSSL highlights insecure websites and their ad trackers](https:
 You should be familiar with command line, JavaScript, and the [Handlebars](http://handlebarsjs.com/) templating system.
 
 ### System Requirements
-1. Install [node.js](http://nodejs.org/) & npm
+1. Install [node.js](http://nodejs.org/) & npm -- (Linux users: [try using the PPA method](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server))
 2. Install [bower](http://bower.io)
 
 ### Installation
