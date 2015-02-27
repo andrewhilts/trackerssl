@@ -25,4 +25,8 @@ Clone this repository, unzip it, navigate to the unzipped folder in Terminal, an
 Then, in Google Chrome, navigate to [chrome://extensions](chrome://extensions), make sure "Developer Mode" is checked off, and then click "Load unpacked extension". Then select the project folder, which should be called **trackerssl**. Make sure the extension is enabled, and you should be good to go!
 
 ### Contributing changes
-Please don't hesitate to create and submit a pull request with any fixes you might have.
+You can contribute to TrackerSSL in numerous ways -- not only with code improvements per se: usability issues, user experience suggestions, and any other bugs can all be added as feature requests or issues over on [this page](https://github.com/andrewhilts/trackerssl/issues).
+
+For code changes, please don't hesitate to create and [submit a pull request](https://github.com/andrewhilts/trackerssl/pulls) with any fixes you might have. 
+
+Happy hacking!
