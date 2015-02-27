@@ -1,5 +1,6 @@
 #TrackerSSL
 ![TrackerSSL Icon](https://openeffect.ca/wp-content/uploads/2015/01/TRACKERSSL-1-180x230.png)
+
 This Chrome extension monitors a web page, and lets you know how many of a page's third party dependencies support HTTPS. TrackerSSL makes it easy to send the site a Tweet, asking them to secure their readers.
 
 [Download TrackerSSL from the Google Chrome Store](https://chrome.google.com/webstore/detail/tracker-ssl/hgoabgkpjcbliklekfgepfdlmcnkjnao) (Works best if you uninstall other ad blocking extensions and then re-install them afterwards, so TrackerSSL can do its magic first.)
