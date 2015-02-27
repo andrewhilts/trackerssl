@@ -20,3 +20,6 @@ Clone this repository, unzip it, navigate to the unzipped folder in Terminal, an
 **Important**: Each time you edit app/popup/popup.handlebars you should run either `bash build.sh` or (from the project root directory) `handlebars app/popup/popup.handlebars -f app/popup/popup.template.js`
 
 Then, in Google Chrome, navigate to [chrome://extensions](chrome://extensions), make sure "Developer Mode" is checked off, and then click "Load unpacked extension". Then select the folder you just unzipped, which should be called **trackerssl**. Make sure the extension is enabled, and you should be good to go!
+
+### Contributing changes
+Please don't hesitate to create and submit a pull request with any fixes you might have.
