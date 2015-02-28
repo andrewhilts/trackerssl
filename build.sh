@@ -12,7 +12,7 @@ echo "Creating tmp directory."
 mkdir "tmp"
 cd tmp
 echo "Scraping HTTPS Everywhere webpage for first link to an extension build."
-urlPath="$(curl https://www.eff.org/Https-everywhere | egrep -o '/files/https-everywhere-chrome-.*?.crx' | head -n 1)"
+urlPath="$(curl https://www.eff.org/Https-everywhere | egrep -o '/files/https-everywhere-chrome-[^"]*?.crx' | head -n 1)"
 urlPrefix="https://www.eff.org"
 url=$urlPrefix$urlPath
 echo "Downloading build from $url"
