@@ -30,4 +30,6 @@ You can contribute to TrackerSSL in numerous ways -- not only with code improvem
 
 For code changes, please don't hesitate to create and [submit a pull request](https://github.com/andrewhilts/trackerssl/pulls) with any fixes you might have. 
 
+Contact: andrew@openeffect.ca
+
 Happy hacking!
