@@ -5,6 +5,6 @@
     "URIjs": "https://github.com/medialize/URI.js.git#~1.14.1",
     "underscore": "~1.7.0",
     "backbone": "~1.1.2",
-    "handlebars": "~2.0.0"
+    "handlebars": "~3.0.0"
   }
 }
