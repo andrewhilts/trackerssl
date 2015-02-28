@@ -11,7 +11,9 @@ You should be familiar with command line, JavaScript, and the [Handlebars](http:
 
 ### System Requirements
 1. Install [node.js](http://nodejs.org/) & npm
-2. Install [bower](http://bower.io)
+2. Install [bower](http://bower.io): `npm install -g bower`
+3. Install [Handlebars](http://handlebarsjs.com/): `npm install -g handlebars`
+4. Unix users: install unzip (optional)
 
 ### Installation
 Clone this repository, unzip it, navigate to the unzipped folder in Terminal, and run `bash build.sh`. This build script will then run `bower install`, to download and install all 3rd party JavaScript libraries used by the app. Another notable task it does is compile the Handlebars template for the extension's popup area. It also grabs the latest HTTPS everywhere ruleset.
